@@ -4,7 +4,7 @@ import { toast } from "react-toastify"
 const DEV_ROUTE = "http://127.0.0.1:5000/"
 const PROD_ROUTE = "https://anemia-chartify-server.onrender.com/"
 
-const ACTIVE_ROUTE = true ? DEV_ROUTE : PROD_ROUTE
+const ACTIVE_ROUTE = !true ? DEV_ROUTE : PROD_ROUTE
 
 // handle getting data from database
 export const getDataService = async () => {
