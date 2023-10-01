@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react"
 import { useAppDispatch } from "../../utility/type"
 import { getData, sendData } from "../../redux/actions"
 import Link from "next/link"
+import { toast } from "react-toastify"
 
 const Admin = () => {
   const dispatch = useAppDispatch()
@@ -23,7 +24,7 @@ const Admin = () => {
   }
 
   const handleUpload = async () => {
-    if (!file) return
+    if (!file) return toast.info("Select a CSV before uploading")
     setConfirmSubmit(true)
   }
 
@@ -36,7 +37,6 @@ const Admin = () => {
       setConfirmSubmit(false)
       setFile(null)
     } catch (error) {
-      console.error("Error Uploading CSV", error)
       setConfirmSubmit(false)
     }
   }
