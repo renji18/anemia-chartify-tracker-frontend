@@ -1,26 +1,29 @@
-"use client";
+"use client"
 
-import { useEffect, useState } from 'react';
-import { getData } from '../redux/actions';
-import { useAppDispatch } from '@/utility/type';
-import FilledLinedCharts from '@/components/FilledLineChart';
+import { useEffect, useState } from "react"
+import { getData } from "../redux/actions"
+import { useAppDispatch } from "@/utility/type"
+import FilledLinedCharts from "@/components/FilledLineChart"
 
 export default function Home() {
-   const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch()
   //  const [allData, setAllData] = useState<Array<Object>>([])
-  const [state, setState] = useState<Array<String>>([
-    "Gujarat",
-  ]);
+  const [state, setState] = useState<Array<String>>(["Gujarat"])
 
-  const [city, setCity] = useState<Array<String>>(["DANG", "PATAN"]);
+  const [city, setCity] = useState<Array<String>>(["DANG", "PATAN"])
 
-  const [cat, setCat] = useState<Array<String>>(["Adolescents", "Children", "Mothers", "Index Value", "Pregnant Women", "Toddlers"]);
+  const [cat, setCat] = useState<Array<String>>([
+    "Adolescents",
+    "Children",
+    "Mothers",
+    "Index Value",
+    "Pregnant Women",
+    "Toddlers",
+  ])
 
-   useEffect(() => {
-     dispatch(getData());
-   }, [dispatch]);
-
-   
+  useEffect(() => {
+    dispatch(getData())
+  }, [dispatch])
 
   return (
     <div className="p-10 min-h-screen">
@@ -82,5 +85,5 @@ export default function Home() {
         </div>
       </div>
     </div>
-  );
+  )
 }
