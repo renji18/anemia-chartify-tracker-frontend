@@ -4,16 +4,15 @@ import { useEffect, useMemo, useState } from 'react';
 import { getData } from '../redux/actions';
 import { useAppDispatch, useAppSelector } from '@/utility/type';
 import FilledLinedCharts from '@/components/FilledLineChart';
-
 interface DataItem {
   data: {
-    "Adolescents (10 - 19 years)": String[];
-    "Children (6 - 9 years)": String[];
     "Children (6 - 59 months)": String[];
-    "Index Value": String[];
+    "Children (6 - 9 years)": String[];
+    "Adolescents (10 - 19 years)": String[];
     "Pregnant Women": String[];
-    Rank: String[];
-    Mothers: String[];
+    "Mothers": String[];
+    "Index Value": String[];
+    "Rank": String[];
     District: String;
   }[];
   quarters: String;
@@ -22,15 +21,17 @@ interface DataItem {
 
 
 interface CityData {
-  "Adolescents (10 - 19 years)": String[];
-  "Children (6 - 9 years)": String[];
   "Children (6 - 59 months)": String[];
-  "Index Value": String[];
+  "Children (6 - 9 years)": String[];
+  "Adolescents (10 - 19 years)": String[];
   "Pregnant Women": String[];
-  Rank: String[];
-  Mothers: String[];
+  "Mothers": String[];
+  "Index Value": String[];
+  "Rank": String[];
   District: String;
 }
+
+type CityDataKey = keyof CityData | "";
 
 
 export default function Home() {
@@ -38,25 +39,22 @@ export default function Home() {
    const [state, setState] = useState<String[]>([]);
    const [cityData, setCityData] = useState<DataItem['data']>([]);
   const [city, setCity] = useState<String[]>([]);
-  const [catData, setCatData] = useState<DataItem['data']>([]);
   const [cat, setCat] = useState<String[]>([]);
+  const [selectedCat, setSelectedCat] = useState<CityDataKey>("");
   const [selectedCategoryData, setSelectedCategoryData] = useState<String[]>([]);
   const [selectedCity, setSelectedCity] = useState<String | null>(null);
 
   const { data } : DataItem = useAppSelector((state:any) => state?.data);
-  console.log(data)
   const dynamicStateValues = useMemo(() =>
-    data?.map((value: any) => value.state.toString()) || [], [data]);
+    data?.map((value: any) => value.state.toString()).sort() || [], [data]);
 
 
     const handleStateChange = (selectedState: String) => {
       setSelectedCity(null);
-      const selectedData: any = data.find((item: any) => item.state === selectedState);
-      console.log(selectedData)
-      
+      const selectedData: any = data.find((item: any) => item.state === selectedState);      
       if (selectedData) {
         setCityData(selectedData.data);
-        setCity(selectedData.data.map((item : CityData) => item.District));
+        setCity(selectedData.data.map((item : CityData) => item.District).sort());
       } else {
         setCity([]);
         setCityData([]);
@@ -78,30 +76,43 @@ const handleCityChange = (selectedCity: String) => {
   }
 };
 
-const handleCategoryChange = (selectedCategory: string) => {
-  if (selectedCity) {
-    const selectedCityData: CityData | undefined = cityData.find(
-      (item) => item.District === selectedCity
-    );
+const handleCatChange = (selectedCat: keyof CityData) => {
+  setSelectedCat(selectedCat);
+}
 
-    if (selectedCityData) {
-      console.log(selectedCityData)
 
-       const categoryData: string[] | undefined =
-         selectedCityData[selectedCategory];
+useEffect(() => {
+  const handleCategoryChange = () => {
+    if (selectedCity && selectedCat !== "") {
+      const selectedCityData: CityData | undefined = cityData.find(
+        (item) => item.District === selectedCity
+      );
 
-       console.log(categoryData);
+      if (selectedCityData) {
+
+        const categoryData: String[] | String | undefined =
+          selectedCityData[selectedCat];
+
         if (categoryData !== undefined) {
-        setSelectedCategoryData(categoryData);
-      } else {
-        console.log(`Category '${selectedCategory}' not found in selectedCityData.`);
-        setSelectedCategoryData([]);
+          const categoryDataArray: String[] = Array.isArray(categoryData)
+            ? categoryData
+            : [categoryData];
+          setSelectedCategoryData(categoryDataArray);
+        } else {
+          console.log(
+            `Category '${selectedCat}' not found in selectedCityData.`
+          );
+          setSelectedCategoryData([]);
+        }
       }
-    }
     } else {
       setSelectedCategoryData([]);
     }
-};
+  };
+
+  handleCategoryChange();
+}, [cityData, selectedCity, selectedCat, state]);
+
 
 
    useEffect(() => {
@@ -111,15 +122,6 @@ const handleCategoryChange = (selectedCategory: string) => {
    useEffect(() => {
     setState(dynamicStateValues);
    },[dynamicStateValues])
-
-   useEffect(() => {
-     console.log(cityData);
-   }, [cityData]);
-
-   useEffect(() => {
-     console.log(selectedCategoryData);
-   }, [selectedCategoryData]);
-
    
 
   return (
@@ -167,7 +169,7 @@ const handleCategoryChange = (selectedCategory: string) => {
             name="cat"
             id="cat"
             disabled={!cat.length}
-            onChange={(e) => handleCategoryChange(e.target.value)}
+            onChange={(e) => handleCatChange(e.target.value as keyof CityData)}
             className="p-2 w-full rounded-md outline-none disabled:cursor-not-allowed"
           >
             <option value="">Select the category</option>
@@ -183,7 +185,13 @@ const handleCategoryChange = (selectedCategory: string) => {
 
       <div className="flex justify-center items-center w-full flex-wrap">
         <div className="w-4/5">
-          <FilledLinedCharts />
+          {selectedCategoryData.length === 0 ? (
+            <div className="py-20 h-fit flex justify-center items-center">
+              <p className="text-2xl">Select the fields to view the data, Bitch!</p>
+              </div>
+          ) : (
+          <FilledLinedCharts yAxisData={selectedCategoryData} cat={selectedCat} />
+)}
         </div>
       </div>
     </div>

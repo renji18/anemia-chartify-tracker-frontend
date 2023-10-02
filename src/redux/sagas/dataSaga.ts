@@ -13,7 +13,7 @@ export function* getDataSagaCall(action: ReduxAction): any {
     }
     return
   } catch (error) {
-    console.log(error, "getDataSagaCall")
+    toast.error(`${error}`)
   }
 }
 
@@ -27,6 +27,6 @@ export function* sendDataSagaCall(action: ReduxAction): any {
       }
     }
   } catch (error) {
-    console.log(error, "sendDataSagaCall")
+    toast.error(`${error}`)
   }
 }
