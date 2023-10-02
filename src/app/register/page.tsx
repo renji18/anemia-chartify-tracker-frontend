@@ -3,10 +3,12 @@
 import Loader from "@/components/Loader"
 import { registerUser } from "@/redux/actions"
 import { useAppDispatch, useAppSelector } from "@/utility/type"
-import { useState } from "react"
+import { useRouter } from "next/navigation"
+import { useEffect, useState } from "react"
 import { toast } from "react-toastify"
- 
+
 const Registration = () => {
+  const router = useRouter()
   const dispatch = useAppDispatch()
   const [data, setData] = useState({
     userName: "",
@@ -14,6 +16,10 @@ const Registration = () => {
     confirmPassword: "",
   })
   const { loading } = useAppSelector((state) => state?.loader)
+
+  useEffect(() => {
+    router.push("/")
+  }, [router])
 
   const handleRegistration = () => {
     if (
