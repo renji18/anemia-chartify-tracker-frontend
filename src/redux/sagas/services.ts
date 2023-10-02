@@ -2,8 +2,8 @@ import { loginRequestData, registerRequestData } from "@/utility/type"
 import axios from "axios"
 import { toast } from "react-toastify"
 
-const DEV_ROUTE = "http://127.0.0.1:5000/"
-const PROD_ROUTE = "https://anemia-chartify-server.onrender.com/"
+const DEV_ROUTE = process.env.NEXT_PUBLIC_DEV_ROUTE
+const PROD_ROUTE = process.env.NEXT_PUBLIC_PROD_ROUTE
 
 const ACTIVE_ROUTE = !true ? DEV_ROUTE : PROD_ROUTE
 
