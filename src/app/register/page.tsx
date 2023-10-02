@@ -15,9 +15,9 @@ const Registration = () => {
     confirmPassword: "",
   })
 
-  useEffect(() => {
-    router.push("/login")
-  }, [router])
+  // useEffect(() => {
+  //   router.push("/login")
+  // }, [router])
 
   const handleRegistration = () => {
     if (data?.password !== data?.confirmPassword)
