@@ -15,6 +15,7 @@ export type UserActions =
   | LoginDataInterface
   | IsLoginDataInterface
   | RegisterUserInterface
+  | LoaingUserInterface
 
 // recieving data interfaces
 export interface GetDataInterface {
@@ -67,6 +68,15 @@ export type registerRequestData = {
 export interface RegisterUserInterface {
   type: typeof actionTypes.REGISTER_USER
   data: registerRequestData
+}
+
+// loading interfaces
+export type loadingRequest = {
+  loading: Boolean
+}
+export interface LoaingUserInterface {
+  type: typeof actionTypes.LOADER
+  data: loadingRequest
 }
 
 // redux action interface

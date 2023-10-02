@@ -1,135 +1,133 @@
-"use client";
+"use client"
 
-import { useEffect, useMemo, useState } from 'react';
-import { getData } from '../redux/actions';
-import { useAppDispatch, useAppSelector } from '@/utility/type';
-import FilledLinedCharts from '@/components/FilledLineChart';
-import Loader from '@/components/Loader';
+import { useEffect, useMemo, useState } from "react"
+import { getData } from "../redux/actions"
+import { useAppDispatch, useAppSelector } from "@/utility/type"
+import FilledLinedCharts from "@/components/FilledLineChart"
+import Loader from "@/components/Loader"
 interface DataItem {
   data: {
-    "Children (6 - 59 months)": String[];
-    "Children (6 - 9 years)": String[];
-    "Adolescents (10 - 19 years)": String[];
-    "Pregnant Women": String[];
-    "Mothers": String[];
-    "Index Value": String[];
-    "Rank": String[];
-    District: String;
-  }[];
-  quarters: String;
-  state: String;
+    "Children (6 - 59 months)": String[]
+    "Children (6 - 9 years)": String[]
+    "Adolescents (10 - 19 years)": String[]
+    "Pregnant Women": String[]
+    Mothers: String[]
+    "Index Value": String[]
+    Rank: String[]
+    District: String
+  }[]
+  quarters: String
+  state: String
 }
-
 
 interface CityData {
-  "Children (6 - 59 months)": String[];
-  "Children (6 - 9 years)": String[];
-  "Adolescents (10 - 19 years)": String[];
-  "Pregnant Women": String[];
-  "Mothers": String[];
-  "Index Value": String[];
-  "Rank": String[];
-  District: String;
+  "Children (6 - 59 months)": String[]
+  "Children (6 - 9 years)": String[]
+  "Adolescents (10 - 19 years)": String[]
+  "Pregnant Women": String[]
+  Mothers: String[]
+  "Index Value": String[]
+  Rank: String[]
+  District: String
 }
 
-type CityDataKey = keyof CityData | "";
-
+type CityDataKey = keyof CityData | ""
 
 export default function Home() {
-   const dispatch = useAppDispatch();
-   const [loading, setLoading] = useState<boolean>(true);
-   const [state, setState] = useState<String[]>([]);
-   const [cityData, setCityData] = useState<DataItem['data']>([]);
-  const [city, setCity] = useState<String[]>([]);
-  const [cat, setCat] = useState<String[]>([]);
-  const [selectedCat, setSelectedCat] = useState<CityDataKey>("");
-  const [selectedCategoryData, setSelectedCategoryData] = useState<String[]>([]);
-  const [selectedCity, setSelectedCity] = useState<String | null>(null);
+  const dispatch = useAppDispatch()
+  // const [loading, setLoading] = useState<boolean>(true)
+  const [state, setState] = useState<String[]>([])
+  const [cityData, setCityData] = useState<DataItem["data"]>([])
+  const [city, setCity] = useState<String[]>([])
+  const [cat, setCat] = useState<String[]>([])
+  const [selectedCat, setSelectedCat] = useState<CityDataKey>("")
+  const [selectedCategoryData, setSelectedCategoryData] = useState<String[]>([])
+  const [selectedCity, setSelectedCity] = useState<String | null>(null)
 
-  const { data } : DataItem = useAppSelector((state:any) => state?.data);
-  const dynamicStateValues = useMemo(() =>
-    data?.map((value: any) => value.state.toString()).sort() || [], [data]);
+  const { data }: DataItem = useAppSelector((state: any) => state?.data)
+  const { loading } = useAppSelector((state) => state?.loader)
 
+  const dynamicStateValues = useMemo(
+    () => data?.map((value: any) => value.state.toString()).sort() || [],
+    [data]
+  )
 
-    const handleStateChange = (selectedState: String) => {
-      setSelectedCity(null);
-      const selectedData: any = data.find((item: any) => item.state === selectedState);      
-      if (selectedData) {
-        setCityData(selectedData.data);
-        setCity(selectedData.data.map((item : CityData) => item.District).sort());
-      } else {
-        setCity([]);
-        setCityData([]);
-      }
-    };
-
-const handleCityChange = (selectedCity: String) => {
-  setSelectedCity(selectedCity);
-  const selectedData = cityData.find(
-    (item) => item.District === selectedCity
-  );
-
-  if (selectedData) {
-  const catKeys = Object.keys(selectedData)
-    .filter((key) => key !== "District")
-    setCat(catKeys);
-  } else {
-    setCat([]);
-  }
-};
-
-const handleCatChange = (selectedCat: keyof CityData) => {
-  setSelectedCat(selectedCat);
-}
-
-
-useEffect(() => {
-  const handleCategoryChange = () => {
-    if (selectedCity && selectedCat !== "") {
-      const selectedCityData: CityData | undefined = cityData.find(
-        (item) => item.District === selectedCity
-      );
-
-      if (selectedCityData) {
-
-        const categoryData: String[] | String | undefined =
-          selectedCityData[selectedCat];
-
-        if (categoryData !== undefined) {
-          const categoryDataArray: String[] = Array.isArray(categoryData)
-            ? categoryData
-            : [categoryData];
-          setSelectedCategoryData(categoryDataArray);
-        } else {
-          console.log(
-            `Category '${selectedCat}' not found in selectedCityData.`
-          );
-          setSelectedCategoryData([]);
-        }
-      }
+  const handleStateChange = (selectedState: String) => {
+    setSelectedCity(null)
+    const selectedData: any = data.find(
+      (item: any) => item.state === selectedState
+    )
+    if (selectedData) {
+      setCityData(selectedData.data)
+      setCity(selectedData.data.map((item: CityData) => item.District).sort())
     } else {
-      setSelectedCategoryData([]);
+      setCity([])
+      setCityData([])
     }
-  };
+  }
 
-  handleCategoryChange();
-}, [cityData, selectedCity, selectedCat, state]);
+  const handleCityChange = (selectedCity: String) => {
+    setSelectedCity(selectedCity)
+    const selectedData = cityData.find((item) => item.District === selectedCity)
 
+    if (selectedData) {
+      const catKeys = Object.keys(selectedData).filter(
+        (key) => key !== "District"
+      )
+      setCat(catKeys)
+    } else {
+      setCat([])
+    }
+  }
 
-   useEffect(() => {
-    dispatch(getData());
-   }, [dispatch]);
+  const handleCatChange = (selectedCat: keyof CityData) => {
+    setSelectedCat(selectedCat)
+  }
 
-   useEffect(() => {
-    setState(dynamicStateValues);
-   },[dynamicStateValues])
+  useEffect(() => {
+    const handleCategoryChange = () => {
+      if (selectedCity && selectedCat !== "") {
+        const selectedCityData: CityData | undefined = cityData.find(
+          (item) => item.District === selectedCity
+        )
 
-   useEffect(() => {
-    state.length !== 0 && setLoading(false);
-   },[state])
+        if (selectedCityData) {
+          const categoryData: String[] | String | undefined =
+            selectedCityData[selectedCat]
+
+          if (categoryData !== undefined) {
+            const categoryDataArray: String[] = Array.isArray(categoryData)
+              ? categoryData
+              : [categoryData]
+            setSelectedCategoryData(categoryDataArray)
+          } else {
+            console.log(
+              `Category '${selectedCat}' not found in selectedCityData.`
+            )
+            setSelectedCategoryData([])
+          }
+        }
+      } else {
+        setSelectedCategoryData([])
+      }
+    }
+
+    handleCategoryChange()
+  }, [cityData, selectedCity, selectedCat, state])
+
+  useEffect(() => {
+    dispatch(getData())
+  }, [dispatch])
+
+  useEffect(() => {
+    setState(dynamicStateValues)
+  }, [dynamicStateValues])
+
+  // useEffect(() => {
+  //   state.length !== 0 && setLoading(false)
+  // }, [state])
 
   if (loading) return <Loader />
-   
 
   return (
     <div className="p-10 min-h-screen">
@@ -197,9 +195,7 @@ useEffect(() => {
           <div className="w-4/5">
             {selectedCategoryData.length === 0 ? (
               <div className="py-20 h-fit flex justify-center items-center">
-                <p className="text-2xl">
-                  Select the fields to view the data
-                </p>
+                <p className="text-2xl">Select the fields to view the data</p>
               </div>
             ) : (
               <FilledLinedCharts
@@ -211,5 +207,5 @@ useEffect(() => {
         </div>
       </div>
     </div>
-  );
+  )
 }

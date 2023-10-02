@@ -1,53 +1,54 @@
-"use client";
+"use client"
 
-import { useEffect, useRef, useState } from "react";
-import { useAppDispatch, useAppSelector } from "../utility/type";
-import { getData, sendData } from "../redux/actions";
-import Link from "next/link";
-import { toast } from "react-toastify";
-import { useRouter } from "next/navigation";
+import { useEffect, useRef, useState } from "react"
+import { useAppDispatch, useAppSelector } from "../utility/type"
+import { getData, sendData } from "../redux/actions"
+import Link from "next/link"
+import { toast } from "react-toastify"
+import Loader from "./Loader"
 
 const AdminSide = () => {
-  const router = useRouter();
-  const dispatch = useAppDispatch();
-  const fileRef = useRef<HTMLInputElement | null>(null);
-  const [file, setFile] = useState<File | null>(null);
-  const [confirmSubmit, setConfirmSubmit] = useState<Boolean>(false);
+  const dispatch = useAppDispatch()
+  const fileRef = useRef<HTMLInputElement | null>(null)
+  const [file, setFile] = useState<File | null>(null)
+  const [confirmSubmit, setConfirmSubmit] = useState<Boolean>(false)
 
+  const { loading } = useAppSelector((state) => state?.loader)
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = e.target.files && e.target.files[0];
+    const selectedFile = e.target.files && e.target.files[0]
     if (selectedFile) {
-      setFile(selectedFile);
+      setFile(selectedFile)
     }
-  };
+  }
 
   const handleOpenFileManager = () => {
-    fileRef.current?.click();
-  };
+    fileRef.current?.click()
+  }
 
   const handleUpload = async () => {
-    if (!file) return toast.info("Select a CSV before uploading");
-    setConfirmSubmit(true);
-  };
+    if (!file) return toast.info("Select a CSV before uploading")
+    setConfirmSubmit(true)
+  }
 
   const finalSubmission = () => {
     try {
-      if (!file) return;
-      const formData = new FormData();
-      formData.append("csvFile", file);
-      dispatch(sendData({ file: formData }));
-      setConfirmSubmit(false);
-      setFile(null);
+      if (!file) return
+      const formData = new FormData()
+      formData.append("csvFile", file)
+      dispatch(sendData({ file: formData }))
+      setConfirmSubmit(false)
+      setFile(null)
     } catch (error) {
-      setConfirmSubmit(false);
+      setConfirmSubmit(false)
     }
-  };
+  }
 
   useEffect(() => {
-    dispatch(getData());
-  }, [dispatch]);
+    dispatch(getData())
+  }, [dispatch])
 
+  if (loading) return <Loader />
 
   return (
     <div className="bg-[#e9ebec] lg:text-xl text-center">
@@ -166,7 +167,7 @@ const AdminSide = () => {
         </div>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default AdminSide;
+export default AdminSide

@@ -53,13 +53,7 @@ export const loginUserService = async (data: loginRequestData) => {
     })
     return response
   } catch (error) {
-    toast.error(
-      `${
-        error?.message === "Network Error"
-          ? "Connection to Database Refused"
-          : error
-      }`
-    )
+    toast.error(error?.response?.data?.error)
   }
 }
 
@@ -73,12 +67,6 @@ export const registerUserService = async (data: registerRequestData) => {
     })
     return response
   } catch (error) {
-    toast.error(
-      `${
-        error?.message === "Network Error"
-          ? "Connection to Database Refused"
-          : error
-      }`
-    )
+    toast.error(error?.response?.data?.error)
   }
 }
