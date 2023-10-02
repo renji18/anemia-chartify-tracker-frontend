@@ -58,13 +58,13 @@ const Admin = () => {
             <div className="flex justify-between px-16 pt-20">
               <button
                 onClick={() => setConfirmSubmit(false)}
-                className="font-mono hover:bg-white/75 px-2 py-1 rounded text-rose-200 hover:text-rose-400 text-2xl"
+                className="font-mono hover:bg-gray-100 bg-gray-300 px-4 py-2 rounded text-rose-500  text-xl"
               >
                 Cancel
               </button>
               <button
                 onClick={finalSubmission}
-                className="font-mono hover:bg-white/75 px-2 py-1 rounded text-emerald-200 hover:text-emerald-400 text-2xl"
+                className="font-mono hover:bg-gray-100 bg-gray-300 px-4 py-2 rounded text-emerald-400 text-xl"
               >
                 Confirm
               </button>
@@ -72,7 +72,7 @@ const Admin = () => {
           </div>
         </div>
       ) : (
-        <div className="px-20 flex flex-col gap-20 justify-center  h-screen">
+        <div className="px-20 flex flex-col justify-evenly min-h-screen ">
           <div className="flex flex-col items-center gap-2">
             <p>
               Visit Official{" "}
@@ -154,7 +154,7 @@ const Admin = () => {
               {file?.name}
             </div>
             <button onClick={handleUpload}>
-              <i className="text-rose-500 hover:font-mono text-xl lg:text-2xl pt-3 underline font-bold">
+              <i className="text-rose-500  text-xl lg:text-2xl pt-3 underline font-bold">
                 Upload CSV
               </i>
             </button>

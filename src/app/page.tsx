@@ -1,29 +1,128 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
-import { getData } from "../redux/actions"
-import { useAppDispatch } from "@/utility/type"
-import FilledLinedCharts from "@/components/FilledLineChart"
+import { useEffect, useMemo, useState } from 'react';
+import { getData } from '../redux/actions';
+import { useAppDispatch, useAppSelector } from '@/utility/type';
+import FilledLinedCharts from '@/components/FilledLineChart';
+interface DataItem {
+  data: {
+    "Children (6 - 59 months)": String[];
+    "Children (6 - 9 years)": String[];
+    "Adolescents (10 - 19 years)": String[];
+    "Pregnant Women": String[];
+    "Mothers": String[];
+    "Index Value": String[];
+    "Rank": String[];
+    District: String;
+  }[];
+  quarters: String;
+  state: String;
+}
+
+
+interface CityData {
+  "Children (6 - 59 months)": String[];
+  "Children (6 - 9 years)": String[];
+  "Adolescents (10 - 19 years)": String[];
+  "Pregnant Women": String[];
+  "Mothers": String[];
+  "Index Value": String[];
+  "Rank": String[];
+  District: String;
+}
+
+type CityDataKey = keyof CityData | "";
+
 
 export default function Home() {
-  const dispatch = useAppDispatch()
-  //  const [allData, setAllData] = useState<Array<Object>>([])
-  const [state, setState] = useState<Array<String>>(["Gujarat"])
+   const dispatch = useAppDispatch();
+   const [state, setState] = useState<String[]>([]);
+   const [cityData, setCityData] = useState<DataItem['data']>([]);
+  const [city, setCity] = useState<String[]>([]);
+  const [cat, setCat] = useState<String[]>([]);
+  const [selectedCat, setSelectedCat] = useState<CityDataKey>("");
+  const [selectedCategoryData, setSelectedCategoryData] = useState<String[]>([]);
+  const [selectedCity, setSelectedCity] = useState<String | null>(null);
 
-  const [city, setCity] = useState<Array<String>>(["DANG", "PATAN"])
+  const { data } : DataItem = useAppSelector((state:any) => state?.data);
+  const dynamicStateValues = useMemo(() =>
+    data?.map((value: any) => value.state.toString()).sort() || [], [data]);
 
-  const [cat, setCat] = useState<Array<String>>([
-    "Adolescents",
-    "Children",
-    "Mothers",
-    "Index Value",
-    "Pregnant Women",
-    "Toddlers",
-  ])
 
-  useEffect(() => {
-    dispatch(getData())
-  }, [dispatch])
+    const handleStateChange = (selectedState: String) => {
+      setSelectedCity(null);
+      const selectedData: any = data.find((item: any) => item.state === selectedState);      
+      if (selectedData) {
+        setCityData(selectedData.data);
+        setCity(selectedData.data.map((item : CityData) => item.District).sort());
+      } else {
+        setCity([]);
+        setCityData([]);
+      }
+    };
+
+const handleCityChange = (selectedCity: String) => {
+  setSelectedCity(selectedCity);
+  const selectedData = cityData.find(
+    (item) => item.District === selectedCity
+  );
+
+  if (selectedData) {
+  const catKeys = Object.keys(selectedData)
+    .filter((key) => key !== "District")
+    setCat(catKeys);
+  } else {
+    setCat([]);
+  }
+};
+
+const handleCatChange = (selectedCat: keyof CityData) => {
+  setSelectedCat(selectedCat);
+}
+
+
+useEffect(() => {
+  const handleCategoryChange = () => {
+    if (selectedCity && selectedCat !== "") {
+      const selectedCityData: CityData | undefined = cityData.find(
+        (item) => item.District === selectedCity
+      );
+
+      if (selectedCityData) {
+
+        const categoryData: String[] | String | undefined =
+          selectedCityData[selectedCat];
+
+        if (categoryData !== undefined) {
+          const categoryDataArray: String[] = Array.isArray(categoryData)
+            ? categoryData
+            : [categoryData];
+          setSelectedCategoryData(categoryDataArray);
+        } else {
+          console.log(
+            `Category '${selectedCat}' not found in selectedCityData.`
+          );
+          setSelectedCategoryData([]);
+        }
+      }
+    } else {
+      setSelectedCategoryData([]);
+    }
+  };
+
+  handleCategoryChange();
+}, [cityData, selectedCity, selectedCat, state]);
+
+
+
+   useEffect(() => {
+    dispatch(getData());
+   }, [dispatch]);
+
+   useEffect(() => {
+    setState(dynamicStateValues);
+   },[dynamicStateValues])
+   
 
   return (
     <div className="p-10 min-h-screen">
@@ -32,6 +131,7 @@ export default function Home() {
           <select
             name="state"
             id="state"
+            onChange={(e) => handleStateChange(e.target.value)}
             className="p-2 w-full rounded-md outline-none"
           >
             <option value="">Select the state</option>
@@ -51,12 +151,14 @@ export default function Home() {
           <select
             name="city"
             id="city"
-            className="p-2 w-full rounded-md outline-none"
+            disabled={!city.length}
+            onChange={(e) => handleCityChange(e.target.value)}
+            className="p-2 w-full rounded-md outline-none disabled:cursor-not-allowed"
           >
             <option value="">Select the city</option>
             {city &&
               city.map((item: String, key: number) => (
-                <option key={key} value={item.toString()}>
+                <option key={key} value={item?.toString()}>
                   {item}
                 </option>
               ))}
@@ -66,7 +168,9 @@ export default function Home() {
           <select
             name="cat"
             id="cat"
-            className="p-2 w-full rounded-md outline-none"
+            disabled={!cat.length}
+            onChange={(e) => handleCatChange(e.target.value as keyof CityData)}
+            className="p-2 w-full rounded-md outline-none disabled:cursor-not-allowed"
           >
             <option value="">Select the category</option>
             {cat &&
@@ -81,9 +185,15 @@ export default function Home() {
 
       <div className="flex justify-center items-center w-full flex-wrap">
         <div className="w-4/5">
-          <FilledLinedCharts />
+          {selectedCategoryData.length === 0 ? (
+            <div className="py-20 h-fit flex justify-center items-center">
+              <p className="text-2xl">Select the fields to view the data, Bitch!</p>
+              </div>
+          ) : (
+          <FilledLinedCharts yAxisData={selectedCategoryData} cat={selectedCat} />
+)}
         </div>
       </div>
     </div>
-  )
+  );
 }
