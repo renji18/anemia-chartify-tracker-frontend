@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { getData } from '../redux/actions';
 import { useAppDispatch, useAppSelector } from '@/utility/type';
 import FilledLinedCharts from '@/components/FilledLineChart';
+import Loader from '@/components/Loader';
 interface DataItem {
   data: {
     "Children (6 - 59 months)": String[];
@@ -36,6 +37,7 @@ type CityDataKey = keyof CityData | "";
 
 export default function Home() {
    const dispatch = useAppDispatch();
+   const [loading, setLoading] = useState<boolean>(true);
    const [state, setState] = useState<String[]>([]);
    const [cityData, setCityData] = useState<DataItem['data']>([]);
   const [city, setCity] = useState<String[]>([]);
@@ -114,7 +116,6 @@ useEffect(() => {
 }, [cityData, selectedCity, selectedCat, state]);
 
 
-
    useEffect(() => {
     dispatch(getData());
    }, [dispatch]);
@@ -122,76 +123,91 @@ useEffect(() => {
    useEffect(() => {
     setState(dynamicStateValues);
    },[dynamicStateValues])
+
+   useEffect(() => {
+    state.length !== 0 && setLoading(false);
+   },[state])
+
+  if (loading) return <Loader />
    
 
   return (
     <div className="p-10 min-h-screen">
-      <div className="flex justify-evenly">
-        <div className="w-[30%]">
-          <select
-            name="state"
-            id="state"
-            onChange={(e) => handleStateChange(e.target.value)}
-            className="p-2 w-full rounded-md outline-none"
-          >
-            <option value="">Select the state</option>
-            {state &&
-              state.map((item: String, key: number) => (
-                <option
-                  style={{ padding: "10px" }}
-                  key={key}
-                  value={item.toString()}
-                >
-                  {item}
-                </option>
-              ))}
-          </select>
+      <div>
+        <div className="flex justify-evenly">
+          <div className="w-[30%]">
+            <select
+              name="state"
+              id="state"
+              onChange={(e) => handleStateChange(e.target.value)}
+              className="p-2 w-full rounded-md outline-none"
+            >
+              <option value="">Select the state</option>
+              {state &&
+                state.map((item: String, key: number) => (
+                  <option
+                    style={{ padding: "10px" }}
+                    key={key}
+                    value={item.toString()}
+                  >
+                    {item}
+                  </option>
+                ))}
+            </select>
+          </div>
+          <div className="w-[30%]">
+            <select
+              name="city"
+              id="city"
+              disabled={!city.length}
+              onChange={(e) => handleCityChange(e.target.value)}
+              className="p-2 w-full rounded-md outline-none disabled:cursor-not-allowed"
+            >
+              <option value="">Select the city</option>
+              {city &&
+                city.map((item: String, key: number) => (
+                  <option key={key} value={item?.toString()}>
+                    {item}
+                  </option>
+                ))}
+            </select>
+          </div>
+          <div className="w-[30%]">
+            <select
+              name="cat"
+              id="cat"
+              disabled={!cat.length}
+              onChange={(e) =>
+                handleCatChange(e.target.value as keyof CityData)
+              }
+              className="p-2 w-full rounded-md outline-none disabled:cursor-not-allowed"
+            >
+              <option value="">Select the category</option>
+              {cat &&
+                cat.map((item: String, key: number) => (
+                  <option key={key} value={item.toString()}>
+                    {item}
+                  </option>
+                ))}
+            </select>
+          </div>
         </div>
-        <div className="w-[30%]">
-          <select
-            name="city"
-            id="city"
-            disabled={!city.length}
-            onChange={(e) => handleCityChange(e.target.value)}
-            className="p-2 w-full rounded-md outline-none disabled:cursor-not-allowed"
-          >
-            <option value="">Select the city</option>
-            {city &&
-              city.map((item: String, key: number) => (
-                <option key={key} value={item?.toString()}>
-                  {item}
-                </option>
-              ))}
-          </select>
-        </div>
-        <div className="w-[30%]">
-          <select
-            name="cat"
-            id="cat"
-            disabled={!cat.length}
-            onChange={(e) => handleCatChange(e.target.value as keyof CityData)}
-            className="p-2 w-full rounded-md outline-none disabled:cursor-not-allowed"
-          >
-            <option value="">Select the category</option>
-            {cat &&
-              cat.map((item: String, key: number) => (
-                <option key={key} value={item.toString()}>
-                  {item}
-                </option>
-              ))}
-          </select>
-        </div>
-      </div>
 
-      <div className="flex justify-center items-center w-full flex-wrap">
-        <div className="w-4/5">
-          {selectedCategoryData.length === 0 ? (
-            <div className="py-20 h-fit flex justify-center items-center">
-              <p className="text-2xl">Select the fields to view the data, Bitch!</p>
+        <div className="flex justify-center items-center w-full flex-wrap">
+          <div className="w-4/5">
+            {selectedCategoryData.length === 0 ? (
+              <div className="py-20 h-fit flex justify-center items-center">
+                <p className="text-2xl">
+                  Select the fields to view the data
+                </p>
               </div>
-          ) : (
-          <FilledLinedCharts yAxisData={selectedCategoryData} cat={selectedCat} />
-)}
+            ) : (
+              <FilledLinedCharts
+                yAxisData={selectedCategoryData}
+                cat={selectedCat}
+              />
+            )}
+          </div>
         </div>
       </div>
     </div>
