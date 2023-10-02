@@ -1,8 +1,11 @@
 import { takeLatest } from "redux-saga/effects"
 import * as actionTypes from "../actions/actionTypes"
-import * as userGenerators from "./dataSaga"
+import * as dataGenerators from "./dataSaga"
+import * as userGenerators from "./userSaga"
 
 export default function* mySaga() {
-  yield takeLatest(actionTypes.GET_DATA, userGenerators.getDataSagaCall)
-  yield takeLatest(actionTypes.POST_DATA, userGenerators.sendDataSagaCall)
+  yield takeLatest(actionTypes.GET_DATA, dataGenerators.getDataSagaCall)
+  yield takeLatest(actionTypes.POST_DATA, dataGenerators.sendDataSagaCall)
+  yield takeLatest(actionTypes.LOGIN_USER, userGenerators.loginUserSagaCall)
+  yield takeLatest(actionTypes.REGISTER_USER, userGenerators.registerUserSagaCall)
 }

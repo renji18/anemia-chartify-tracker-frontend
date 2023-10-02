@@ -1,3 +1,6 @@
 export const GET_DATA = "GET_DATA"
 export const SAVE_DATA = "SAVE_DATA"
 export const POST_DATA = "POST_DATA"
+export const LOGIN_USER = "LOGIN_USER"
+export const IS_LOGGED_IN = "IS_LOGGED_IN"
+export const REGISTER_USER = "REGISTER_USER"

@@ -1,3 +1,4 @@
+import { loginRequestData, registerRequestData } from "@/utility/type"
 import axios from "axios"
 import { toast } from "react-toastify"
 
@@ -23,11 +24,51 @@ export const getDataService = async () => {
 }
 
 // handle sending data to database
-export const sendDataService = async (formData: any) => {
+export const sendDataService = async (formData: FormData) => {
   try {
     const response = await axios.post(`${ACTIVE_ROUTE}upload`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
+      },
+    })
+    return response
+  } catch (error) {
+    toast.error(
+      `${
+        error?.message === "Network Error"
+          ? "Connection to Database Refused"
+          : error
+      }`
+    )
+  }
+}
+
+// handle logging user in
+export const loginUserService = async (data: loginRequestData) => {
+  try {
+    const response = await axios.post(`${ACTIVE_ROUTE}login`, data, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+    return response
+  } catch (error) {
+    toast.error(
+      `${
+        error?.message === "Network Error"
+          ? "Connection to Database Refused"
+          : error
+      }`
+    )
+  }
+}
+
+// handle registeration user in
+export const registerUserService = async (data: registerRequestData) => {
+  try {
+    const response = await axios.post(`${ACTIVE_ROUTE}register`, data, {
+      headers: {
+        "Content-Type": "application/json",
       },
     })
     return response
