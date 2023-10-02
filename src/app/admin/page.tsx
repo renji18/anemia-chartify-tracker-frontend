@@ -1,16 +1,20 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import { useAppDispatch } from "../../utility/type"
+import { useAppDispatch, useAppSelector } from "../../utility/type"
 import { getData, sendData } from "../../redux/actions"
 import Link from "next/link"
 import { toast } from "react-toastify"
+import { useRouter } from "next/navigation"
 
 const Admin = () => {
+  const router = useRouter()
   const dispatch = useAppDispatch()
   const fileRef = useRef<HTMLInputElement | null>(null)
   const [file, setFile] = useState<File | null>(null)
   const [confirmSubmit, setConfirmSubmit] = useState<Boolean>(false)
+
+  const { loggedIn } = useAppSelector((state) => state?.user)
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files && e.target.files[0]
@@ -44,6 +48,15 @@ const Admin = () => {
   useEffect(() => {
     dispatch(getData())
   }, [dispatch])
+
+  useEffect(() => {
+    const pushToLogin = () => {
+      if (loggedIn === false) {
+        router.push("/login")
+      }
+    }
+    pushToLogin()
+  }, [loggedIn, router])
 
   return (
     <div className="bg-[#e9ebec] lg:text-xl text-center">
