@@ -101,9 +101,6 @@ export default function Home() {
               : [categoryData]
             setSelectedCategoryData(categoryDataArray)
           } else {
-            console.log(
-              `Category '${selectedCat}' not found in selectedCityData.`
-            )
             setSelectedCategoryData([])
           }
         }
