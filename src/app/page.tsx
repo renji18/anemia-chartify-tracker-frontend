@@ -35,7 +35,7 @@ type CityDataKey = keyof CityData | ""
 
 export default function Home() {
   const dispatch = useAppDispatch()
-  // const [loading, setLoading] = useState<boolean>(true)
+  const [loading, setLoading] = useState<boolean>(true)
   const [state, setState] = useState<String[]>([])
   const [cityData, setCityData] = useState<DataItem["data"]>([])
   const [city, setCity] = useState<String[]>([])
@@ -45,7 +45,7 @@ export default function Home() {
   const [selectedCity, setSelectedCity] = useState<String | null>(null)
 
   const { data }: DataItem = useAppSelector((state: any) => state?.data)
-  const { loading } = useAppSelector((state) => state?.loader)
+  // const { loading } = useAppSelector((state) => state?.loader)
 
   const dynamicStateValues = useMemo(
     () => data?.map((value: any) => value.state.toString()).sort() || [],
@@ -119,6 +119,10 @@ export default function Home() {
   useEffect(() => {
     setState(dynamicStateValues)
   }, [dynamicStateValues])
+
+  useEffect(() => {
+    state?.length !== 0 && setLoading(false)
+  }, [state])
 
   if (loading) return <Loader />
 
