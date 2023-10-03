@@ -112,9 +112,15 @@ export default function Home() {
     handleCategoryChange()
   }, [cityData, selectedCity, selectedCat, state])
 
+  const [listenRandom, setlistenRandom] = useState(Math.random() * 10)
+
+  useEffect(() => {
+    setlistenRandom(Math.random() * 10)
+  }, [])
+
   useEffect(() => {
     dispatch(getData())
-  }, [])
+  }, [listenRandom])
 
   useEffect(() => {
     setState(dynamicStateValues)
