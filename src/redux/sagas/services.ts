@@ -10,9 +10,8 @@ const ACTIVE_ROUTE = !true ? DEV_ROUTE : PROD_ROUTE
 // handle getting data from database
 export const getDataService = async () => {
   try {
-    const response = await axios.get(`${ACTIVE_ROUTE}`)
-    return response
-  } catch (error:any) {
+    return await axios.get(`${ACTIVE_ROUTE}`)
+  } catch (error: any) {
     toast.error(
       `${
         error?.message === "Network Error"
@@ -26,13 +25,12 @@ export const getDataService = async () => {
 // handle sending data to database
 export const sendDataService = async (formData: FormData) => {
   try {
-    const response = await axios.post(`${ACTIVE_ROUTE}upload`, formData, {
+    return await axios.post(`${ACTIVE_ROUTE}upload`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
     })
-    return response
-  } catch (error:any) {
+  } catch (error: any) {
     toast.error(
       `${
         error?.message === "Network Error"
@@ -52,7 +50,7 @@ export const loginUserService = async (data: loginRequestData) => {
       },
     })
     return response
-  } catch (error:any) {
+  } catch (error: any) {
     toast.error(error?.response?.data?.error)
   }
 }
@@ -66,7 +64,7 @@ export const registerUserService = async (data: registerRequestData) => {
       },
     })
     return response
-  } catch (error:any) {
+  } catch (error: any) {
     toast.error(error?.response?.data?.error)
   }
 }

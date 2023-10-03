@@ -9,10 +9,9 @@ export function* getDataSagaCall(action: ReduxAction): any {
   try {
     yield put(actionCreators.isLoading({ loading: true }))
     const res = yield serviceCreators.getDataService()
+    console.log(res, "YOOO RES")
     if (res && res?.status === 201) {
-      yield put(actionCreators.isLoading({ loading: false }))
       yield put(actionCreators.saveData(res?.data))
-      return
     }
     yield put(actionCreators.isLoading({ loading: false }))
   } catch (error) {
@@ -27,8 +26,7 @@ export function* sendDataSagaCall(action: ReduxAction): any {
     const res = yield serviceCreators.sendDataService(action?.data?.file)
     if (res && (res?.status === 201 || res?.status === 200)) {
       if (res?.data?.status === "SUCCESS") {
-        yield put(actionCreators.isLoading({ loading: false }))
-        return toast.success("Data Stored Successfully")
+        toast.success("Data Stored Successfully")
       }
     }
     yield put(actionCreators.isLoading({ loading: false }))

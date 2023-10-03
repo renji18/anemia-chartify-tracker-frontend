@@ -117,15 +117,11 @@ export default function Home() {
 
   useEffect(() => {
     dispatch(getData())
-  }, [dispatch])
+  }, [])
 
   useEffect(() => {
     setState(dynamicStateValues)
   }, [dynamicStateValues])
-
-  // useEffect(() => {
-  //   state.length !== 0 && setLoading(false)
-  // }, [state])
 
   if (loading) return <Loader />
 
