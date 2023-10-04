@@ -1,10 +1,19 @@
 "use client"
 
 import { useEffect, useMemo, useState } from "react"
-import { getData } from "../redux/actions"
+import { getData, saveData } from "../redux/actions"
 import { useAppDispatch, useAppSelector } from "@/utility/type"
 import FilledLinedCharts from "@/components/FilledLineChart"
 import Loader from "@/components/Loader"
+
+import axios from "axios"
+import { toast } from "react-toastify"
+
+const DEV_ROUTE = process.env.NEXT_PUBLIC_DEV_ROUTE
+const PROD_ROUTE = process.env.NEXT_PUBLIC_PROD_ROUTE
+
+const ACTIVE_ROUTE = !true ? DEV_ROUTE : PROD_ROUTE
+
 interface DataItem {
   data: {
     "Children (6 - 59 months)": String[]
@@ -112,15 +121,55 @@ export default function Home() {
     handleCategoryChange()
   }, [cityData, selectedCity, selectedCat, state])
 
-  const [listenRandom, setlistenRandom] = useState(Math.random() * 10)
-
   useEffect(() => {
-    setlistenRandom(Math.random() * 10)
+    dispatch(getData())
   }, [])
 
   useEffect(() => {
     dispatch(getData())
-  }, [listenRandom])
+  }, [dispatch])
+
+  useEffect(() => {
+    // handle getting data from database
+    const getDataService = async () => {
+      try {
+        const res = await axios.get(`${ACTIVE_ROUTE}`)
+        console.log(res, "YOOOO RESSS")
+
+        dispatch(saveData(res?.data))
+      } catch (error: any) {
+        toast.error(
+          `${
+            error?.message === "Network Error"
+              ? "Connection to Database Refused"
+              : error
+          }`
+        )
+      }
+    }
+    getDataService()
+  }, [])
+
+  useEffect(() => {
+    // handle getting data from database
+    const getDataService = async () => {
+      try {
+        const res = await axios.get(`${ACTIVE_ROUTE}`)
+        console.log(res, "YOOOO RESSS")
+
+        dispatch(saveData(res?.data))
+      } catch (error: any) {
+        toast.error(
+          `${
+            error?.message === "Network Error"
+              ? "Connection to Database Refused"
+              : error
+          }`
+        )
+      }
+    }
+    getDataService()
+  }, [dispatch])
 
   useEffect(() => {
     setState(dynamicStateValues)
