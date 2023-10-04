@@ -134,7 +134,6 @@ export default function Home() {
     const getDataService = async () => {
       try {
         const res = await axios.get(`${ACTIVE_ROUTE}`)
-        console.log(res, "YOOOO RESSS")
 
         dispatch(saveData(res?.data))
       } catch (error: any) {
@@ -155,7 +154,6 @@ export default function Home() {
     const getDataService = async () => {
       try {
         const res = await axios.get(`${ACTIVE_ROUTE}`)
-        console.log(res, "YOOOO RESSS")
 
         dispatch(saveData(res?.data))
       } catch (error: any) {
