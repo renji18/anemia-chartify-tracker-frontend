@@ -44,7 +44,7 @@ type CityDataKey = keyof CityData | ""
 
 export default function Home() {
   const dispatch = useAppDispatch()
-  const [loading, setLoading] = useState<boolean>(true)
+  // const [loading, setLoading] = useState<boolean>(true)
   const [state, setState] = useState<String[]>([])
   const [cityData, setCityData] = useState<DataItem["data"]>([])
   const [city, setCity] = useState<String[]>([])
@@ -54,12 +54,11 @@ export default function Home() {
   const [selectedCity, setSelectedCity] = useState<String | null>(null)
 
   const { data }: DataItem = useAppSelector((state: any) => state?.data)
-  // const { loading } = useAppSelector((state) => state?.loader)
+  const { loading } = useAppSelector((state) => state?.loader)
 
-  const dynamicStateValues = useMemo(
-    () => data?.map((value: any) => value.state.toString()).sort() || [],
-    [data]
-  )
+  useEffect(() => {
+    setState(data?.map((value: any) => value?.state?.toString()).sort() || [])
+  }, [data])
 
   const handleStateChange = (selectedState: String) => {
     setSelectedCity(null)
@@ -125,28 +124,25 @@ export default function Home() {
     dispatch(getData())
   }, [])
 
-  useEffect(() => {
-    const getDataService = async () => {
-      try {
-        const res = await axios.get(`${ACTIVE_ROUTE}`)
-        console.log(res?.data, 'RES FROM HOME');
-        
+  // useEffect(() => {
+  //   const getDataService = async () => {
+  //     try {
+  //       const res = await axios.get(`${ACTIVE_ROUTE}`)
+  //       const data = res?.data
+  //       setState(
+  //         data?.map((value: any) => value?.state?.toString()).sort() || []
+  //       )
+  //       dispatch(saveData(data))
+  //     } catch (error: any) {
+  //       toast.error(`${error}`)
+  //     }
+  //   }
+  //   getDataService()
+  // }, [])
 
-        dispatch(saveData(res?.data))
-      } catch (error: any) {
-        toast.error(`${error}`)
-      }
-    }
-    getDataService()
-  }, [])
-
-  useEffect(() => {
-    setState(dynamicStateValues)
-  }, [dynamicStateValues])
-
-  useEffect(() => {
-    state?.length !== 0 && setLoading(false)
-  }, [state])
+  // useEffect(() => {
+  //   state?.length !== 0 && setLoading(false)
+  // }, [state])
 
   if (loading) return <Loader />
 
