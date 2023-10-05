@@ -126,48 +126,19 @@ export default function Home() {
   }, [])
 
   useEffect(() => {
-    dispatch(getData())
-  }, [dispatch])
-
-  useEffect(() => {
-    // handle getting data from database
     const getDataService = async () => {
       try {
         const res = await axios.get(`${ACTIVE_ROUTE}`)
+        console.log(res?.data, 'RES FROM HOME');
+        
 
         dispatch(saveData(res?.data))
       } catch (error: any) {
-        toast.error(
-          `${
-            error?.message === "Network Error"
-              ? "Connection to Database Refused"
-              : error
-          }`
-        )
+        toast.error(`${error}`)
       }
     }
     getDataService()
   }, [])
-
-  useEffect(() => {
-    // handle getting data from database
-    const getDataService = async () => {
-      try {
-        const res = await axios.get(`${ACTIVE_ROUTE}`)
-
-        dispatch(saveData(res?.data))
-      } catch (error: any) {
-        toast.error(
-          `${
-            error?.message === "Network Error"
-              ? "Connection to Database Refused"
-              : error
-          }`
-        )
-      }
-    }
-    getDataService()
-  }, [dispatch])
 
   useEffect(() => {
     setState(dynamicStateValues)
