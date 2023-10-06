@@ -4,10 +4,10 @@ import * as actionTypes from "../actions/actionTypes"
 // login status reducer
 export const dataReducer = (state = [], { type, data }: UserActions) => {
   switch (type) {
-    case actionTypes.SAVE_DATA:
+    case actionTypes.SAVE_DATA_QUARTERLY:
       return {
         ...state,
-        data,
+        quarterly: data,
       }
     default:
       return state

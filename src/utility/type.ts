@@ -19,7 +19,7 @@ export type UserActions =
 
 // recieving data interfaces
 export interface GetDataInterface {
-  type: typeof actionTypes.GET_DATA
+  type: typeof actionTypes.GET_DATA_QUARTERLY
   data?: null
 }
 
@@ -28,7 +28,7 @@ export type saveRequestData = {
   data: Array<Object>
 }
 export interface SaveDataInterface {
-  type: typeof actionTypes.SAVE_DATA
+  type: typeof actionTypes.SAVE_DATA_QUARTERLY
   data: saveRequestData
 }
 
@@ -38,7 +38,7 @@ export type sendRequestData = {
   // dispatch: AppDispatch;
 }
 export interface SendDataInterface {
-  type: typeof actionTypes.POST_DATA
+  type: typeof actionTypes.POST_DATA_QUARTERLY
   data: sendRequestData
 }
 
@@ -83,4 +83,31 @@ export interface LoaingUserInterface {
 export interface ReduxAction {
   type: string
   data?: any
+}
+
+// data item from redux interface
+export interface DataItem {
+  quarterly: {
+    "Children (6 - 59 months)": String[]
+    "Children (6 - 9 years)": String[]
+    "Adolescents (10 - 19 years)": String[]
+    "Pregnant Women": String[]
+    Mothers: String[]
+    "Index Value": String[]
+    Rank: String[]
+    District: String
+  }[]
+  quarters: String
+  state: String
+}
+
+export interface CityData {
+  "Children (6 - 59 months)": String[]
+  "Children (6 - 9 years)": String[]
+  "Adolescents (10 - 19 years)": String[]
+  "Pregnant Women": String[]
+  Mothers: String[]
+  "Index Value": String[]
+  Rank: String[]
+  District: String
 }

@@ -1,3 +1,3 @@
 export { loginUser, isLoggedIn, registerUser } from "./userActions"
-export { getData, sendData, saveData } from "./dataActions"
+export { getDataQuarterly, sendDataQuarterly, saveDataQuarterly } from "./dataActions"
 export { isLoading } from "./loaderActions"

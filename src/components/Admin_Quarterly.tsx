@@ -1,13 +1,13 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useRef, useState } from "react"
 import { useAppDispatch, useAppSelector } from "../utility/type"
-import { getData, sendData } from "../redux/actions"
+import { sendDataQuarterly } from "../redux/actions"
 import Link from "next/link"
 import { toast } from "react-toastify"
 import Loader from "./Loader"
 
-const AdminSide = () => {
+const QuarterlyAdminSide = () => {
   const dispatch = useAppDispatch()
   const fileRef = useRef<HTMLInputElement | null>(null)
   const [file, setFile] = useState<File | null>(null)
@@ -36,17 +36,13 @@ const AdminSide = () => {
       if (!file) return
       const formData = new FormData()
       formData.append("csvFile", file)
-      dispatch(sendData({ file: formData }))
+      dispatch(sendDataQuarterly({ file: formData }))
       setConfirmSubmit(false)
       setFile(null)
     } catch (error) {
       setConfirmSubmit(false)
     }
   }
-
-  useEffect(() => {
-    dispatch(getData())
-  }, [dispatch])
 
   if (loading) return <Loader />
 
@@ -170,4 +166,4 @@ const AdminSide = () => {
   )
 }
 
-export default AdminSide
+export default QuarterlyAdminSide

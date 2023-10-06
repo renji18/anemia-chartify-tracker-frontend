@@ -10,7 +10,7 @@ export function* getDataSagaCall(action: ReduxAction): any {
     yield put(actionCreators.isLoading({ loading: true }))
     const res = yield serviceCreators.getDataService()
     if (res && res?.status === 201) {
-      yield put(actionCreators.saveData(res?.data))
+      yield put(actionCreators.saveDataQuarterly(res?.data))
     }
     yield put(actionCreators.isLoading({ loading: false }))
   } catch (error) {
