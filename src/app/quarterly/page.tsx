@@ -12,7 +12,7 @@ import Loader from "@/components/Loader"
 
 type CityDataKey = keyof CityData | ""
 
-export default function Home() {
+export default function Quarterly() {
   const dispatch = useAppDispatch()
   // const [loading, setLoading] = useState<boolean>(true)
   const [state, setState] = useState<String[]>([])
@@ -97,6 +97,11 @@ export default function Home() {
   return (
     <div className="p-10 min-h-screen">
       <div>
+        {selectedCategoryData.length === 0 && (
+          <div className="pb-10 h-fit flex justify-center items-center">
+            <p className="text-2xl">Select the fields to view the data</p>
+          </div>
+        )}
         <div className="flex justify-evenly">
           <div className="w-[30%]">
             <select
@@ -158,11 +163,7 @@ export default function Home() {
 
         <div className="flex justify-center items-center w-full flex-wrap">
           <div className="w-4/5">
-            {selectedCategoryData.length === 0 ? (
-              <div className="py-20 h-fit flex justify-center items-center">
-                <p className="text-2xl">Select the fields to view the data</p>
-              </div>
-            ) : (
+            {selectedCategoryData.length !== 0 && (
               <FilledLinedCharts
                 yAxisData={selectedCategoryData}
                 cat={selectedCat}
