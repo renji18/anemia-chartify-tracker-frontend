@@ -111,3 +111,10 @@ export interface CityData {
   Rank: String[]
   District: String
 }
+
+// y-axis data set interface
+export interface DataSetInterface {
+  data: String[]
+  label: String | null
+  borderColor: String
+}

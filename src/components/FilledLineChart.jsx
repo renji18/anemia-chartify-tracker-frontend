@@ -1,58 +1,61 @@
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useState } from "react"
 import { Chart } from "chart.js"
-import { useAppSelector } from "@/utility/type"
 
-export default function FilledLinedCharts({ yAxisData, cat }) {
+export default function FilledLinedCharts({
+  yAxisData,
+  category,
+  selectedState,
+  selectedCity,
+  quarterly,
+}) {
   const [xAxis, setXAxis] = useState([])
   const [yAxis, setYAxis] = useState([])
 
-  const { quarterly } = useAppSelector((state) => state?.data)
-
-  const dynamicXAxisValues = useMemo(
-    () =>
-      quarterly
-        ?.map((value) => `${value.quarters.toString()}`)
-        .join(",")
-        .split(",") || [],
-    [quarterly]
-  )
-
-  useEffect(() => setXAxis(dynamicXAxisValues), [dynamicXAxisValues])
+  // useEffect to properly select quarters for specific states
+  useEffect(() => {
+    setXAxis(
+      quarterly?.filter((data) => data?.state === selectedState)[0]?.quarters
+    )
+  }, [quarterly, selectedState])
 
   useEffect(() => {
     setYAxis(yAxisData)
-  }, [yAxisData, setYAxis])
+  }, [yAxisData])
 
   useEffect(() => {
     var ctx = document.getElementById("myChart").getContext("2d")
-    var myChart = new Chart(ctx, {
+    new Chart(ctx, {
       type: "line",
       data: {
         labels: xAxis,
-        datasets: [
-          {
-            data: yAxis,
-            label: "Anemia",
-            borderColor: "rgb(62,149,205)",
-            backgroundColor: "rgb(62,149,205,0.1)",
-          },
-        ],
+        datasets: yAxis,
       },
     })
-  }, [xAxis, yAxis])
+  }, [xAxis, yAxis, selectedCity])
 
   return (
     <div>
       <h1 className="self-center mt-10 text-xl font-semibold capitalize ">
-        {cat}
+        {category}
       </h1>
       {xAxis && (
         <div className="flex mx-auto my-auto mt-4 ">
-          <div className="border border-gray-400 pt-0 rounded-xl w-full h-fit my-auto  shadow-xl">
-            <canvas id="myChart"></canvas>
+          <p
+            style={{ writingMode: "vertical-rl" }}
+            className="rotate-180 origin-center whitespace-nowrap absolute top-[35%] left-10 lg:left-20 text-center text-3xl"
+          >
+            {category} &rarr;
+          </p>
+          <div className="border border-gray-400 pt-0 rounded-xl w-full h-full my-auto  shadow-xl">
+            <canvas className="h-screen" id="myChart"></canvas>
           </div>
         </div>
       )}
+      <div>
+        <p className="text-center pt-5 text-3xl">
+          {quarterly ? `Quarterly Data Starting From 2021 ` : ""} &rarr;
+        </p>
+      </div>
     </div>
   )
 }
