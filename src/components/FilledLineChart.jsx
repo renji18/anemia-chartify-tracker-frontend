@@ -1,11 +1,21 @@
 import { useEffect, useState } from "react"
-import { Chart } from "chart.js"
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js"
+import { Bar } from "react-chartjs-2"
+
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
 export default function FilledLinedCharts({
   yAxisData,
   category,
   selectedState,
-  selectedCity,
   quarterly,
 }) {
   const [xAxis, setXAxis] = useState([])
@@ -22,16 +32,20 @@ export default function FilledLinedCharts({
     setYAxis(yAxisData)
   }, [yAxisData])
 
-  useEffect(() => {
-    var ctx = document.getElementById("myChart").getContext("2d")
-    new Chart(ctx, {
-      type: "line",
-      data: {
-        labels: xAxis,
-        datasets: yAxis,
-      },
-    })
-  }, [xAxis, yAxis, selectedCity])
+  // useEffect(() => {
+  //   var ctx = document.getElementById("myChart").getContext("2d")
+  //   const yAxisDataTag = yAxis
+  //   console.log(Math.random())
+  //   console.log(yAxisDataTag, "dta tag")
+  //   // const config =
+  //   var myChart = new Chart(ctx, {
+  //     type: "line",
+  //     data: {
+  //       labels: xAxis,
+  //       datasets: yAxisDataTag,
+  //     },
+  //   })
+  // }, [xAxis, yAxis])
 
   return (
     <div>
@@ -47,7 +61,24 @@ export default function FilledLinedCharts({
             {category} &rarr;
           </p>
           <div className="border border-gray-400 pt-0 rounded-xl w-full h-full my-auto  shadow-xl">
-            <canvas className="h-screen" id="myChart"></canvas>
+            {/* <canvas className="h-screen" id="myChart"></canvas> */}
+            <Bar
+              data={{
+                labels: xAxis,
+                datasets: yAxis,
+              }}
+              options={{
+                responsive: true,
+                scales: {
+                  xAxis: {
+                    stacked: true,
+                  },
+                  yAxis: {
+                    stacked: true,
+                  },
+                },
+              }}
+            />
           </div>
         </div>
       )}
