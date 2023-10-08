@@ -131,6 +131,7 @@ export default function Quarterly() {
     for (let i = 0; i < 6; i++) {
       color += letters[Math.floor(Math.random() * 16)]
     }
+    color += "aa"
     return color
   }
 
@@ -201,7 +202,7 @@ export default function Quarterly() {
                   data: categoryDataArray,
                   label: selectedCity,
                   borderColor: getUniqueRandomColor(),
-                  backgroundColor: "rgba(255, 255, 255, 0)",
+                  backgroundColor: getUniqueRandomColor(),
                 },
               ])
             }
@@ -239,7 +240,7 @@ export default function Quarterly() {
             data: dataArray,
             label: data?.District?.toString() || "",
             borderColor: getUniqueRandomColor(),
-            backgroundColor: "rgba(255, 255, 255, 0)",
+            backgroundColor: getUniqueRandomColor(),
           }
         })
         setSelectedCategoryData(modifyAllData)
@@ -344,7 +345,6 @@ export default function Quarterly() {
                 yAxisData={selectedCategoryData}
                 category={selectedCategory}
                 selectedState={selectedState}
-                selectedCity={selectedCity}
                 quarterly={quarterly}
               />
             )}

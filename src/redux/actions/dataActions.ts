@@ -19,7 +19,7 @@ export const saveDataQuarterly = (data: saveRequestData): SaveDataInterface => (
 })
 
 // send Data
-export const sendDataQuarterly = (data: sendRequestData): SendDataInterface => ({
-  type: actionTypes.POST_DATA_QUARTERLY,
+export const sendData = (data: sendRequestData): SendDataInterface => ({
+  type: actionTypes.POST_DATA,
   data,
 })

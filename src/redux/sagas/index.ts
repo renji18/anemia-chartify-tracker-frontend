@@ -8,10 +8,7 @@ export default function* mySaga() {
     actionTypes.GET_DATA_QUARTERLY,
     dataGenerators.getDataSagaCall
   )
-  yield takeLatest(
-    actionTypes.POST_DATA_QUARTERLY,
-    dataGenerators.sendDataSagaCall
-  )
+  yield takeLatest(actionTypes.POST_DATA, dataGenerators.postDataSagaCall)
   yield takeLatest(actionTypes.LOGIN_USER, userGenerators.loginUserSagaCall)
   yield takeLatest(
     actionTypes.REGISTER_USER,

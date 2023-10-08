@@ -1,13 +1,13 @@
 "use client"
 
-import QuarterlyAdminSide from "@/components/Admin_Quarterly"
+import AdminSide from "@/components/Admin"
 import Login from "@/components/Login"
 import { useAppSelector } from "@/utility/type"
 
 const Admin = () => {
   const { loggedIn } = useAppSelector((state: any) => state?.user)
 
-  return loggedIn ? <QuarterlyAdminSide /> : <Login />
+  return loggedIn ? <AdminSide type={"quarterly"} /> : <Login />
 }
 
 export default Admin

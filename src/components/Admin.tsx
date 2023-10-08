@@ -2,12 +2,12 @@
 
 import { useRef, useState } from "react"
 import { useAppDispatch, useAppSelector } from "../utility/type"
-import { sendDataQuarterly } from "../redux/actions"
+import { sendData } from "../redux/actions"
 import Link from "next/link"
 import { toast } from "react-toastify"
 import Loader from "./Loader"
 
-const QuarterlyAdminSide = () => {
+const AdminSide = ({ type }: { type: String }) => {
   const dispatch = useAppDispatch()
   const fileRef = useRef<HTMLInputElement | null>(null)
   const [file, setFile] = useState<File | null>(null)
@@ -36,7 +36,8 @@ const QuarterlyAdminSide = () => {
       if (!file) return
       const formData = new FormData()
       formData.append("csvFile", file)
-      dispatch(sendDataQuarterly({ file: formData }))
+      formData.append("type", type.toString())
+      dispatch(sendData({ file: formData }))
       setConfirmSubmit(false)
       setFile(null)
     } catch (error) {
@@ -166,4 +167,4 @@ const QuarterlyAdminSide = () => {
   )
 }
 
-export default QuarterlyAdminSide
+export default AdminSide

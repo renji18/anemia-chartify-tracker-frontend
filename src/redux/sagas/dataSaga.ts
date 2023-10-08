@@ -19,10 +19,10 @@ export function* getDataSagaCall(action: ReduxAction): any {
 }
 
 // send data
-export function* sendDataSagaCall(action: ReduxAction): any {
+export function* postDataSagaCall(action: ReduxAction): any {
   try {
     yield put(actionCreators.isLoading({ loading: true }))
-    const res = yield serviceCreators.sendDataService(action?.data?.file)
+    const res = yield serviceCreators.postDataService(action?.data?.file)
     if (res && (res?.status === 201 || res?.status === 200)) {
       if (res?.data?.status === "SUCCESS") {
         toast.success("Data Stored Successfully")

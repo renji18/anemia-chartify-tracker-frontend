@@ -35,10 +35,9 @@ export interface SaveDataInterface {
 // sending data interfaces
 export type sendRequestData = {
   file: FormData
-  // dispatch: AppDispatch;
 }
 export interface SendDataInterface {
-  type: typeof actionTypes.POST_DATA_QUARTERLY
+  type: typeof actionTypes.POST_DATA
   data: sendRequestData
 }
 
