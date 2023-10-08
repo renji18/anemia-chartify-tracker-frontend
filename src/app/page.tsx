@@ -1,17 +1,9 @@
 "use client"
 
-import { getDataQuarterly } from "@/redux/actions"
-import { useAppDispatch } from "@/utility/type"
 import { useRouter } from "next/navigation"
-import { useEffect } from "react"
 
 export default function Home() {
-  const dispatch = useAppDispatch()
   const router = useRouter()
-
-  useEffect(() => {
-    dispatch(getDataQuarterly())
-  }, [dispatch])
 
   return (
     <div className="flex flex-col justify-center gap-32 items-center min-h-screen">

@@ -10,7 +10,7 @@ import {
 } from "@/utility/type"
 import FilledLinedCharts from "@/components/FilledLineChart"
 import Loader from "@/components/Loader"
-import { getDataQuarterly } from "@/redux/actions"
+import { getData } from "@/redux/actions"
 
 type CityDataKey = keyof CityData | ""
 
@@ -251,8 +251,8 @@ export default function Quarterly() {
 
   // useEffect to get the quarterly data
   useEffect(() => {
-    availableStates.length === 0 && dispatch(getDataQuarterly())
-  }, [dispatch, availableStates])
+    dispatch(getData({ typeOf: "quarterly" }))
+  }, [])
 
   if (loading) return <Loader />
 
