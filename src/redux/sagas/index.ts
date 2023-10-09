@@ -5,7 +5,7 @@ import * as userGenerators from "./userSaga"
 
 export default function* mySaga() {
   yield takeLatest(
-    actionTypes.GET_DATA_QUARTERLY,
+    actionTypes.GET_DATA,
     dataGenerators.getDataSagaCall
   )
   yield takeLatest(actionTypes.POST_DATA, dataGenerators.postDataSagaCall)

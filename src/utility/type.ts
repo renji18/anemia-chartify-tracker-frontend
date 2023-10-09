@@ -18,17 +18,19 @@ export type UserActions =
   | LoaingUserInterface
 
 // recieving data interfaces
+
 export interface GetDataInterface {
-  type: typeof actionTypes.GET_DATA_QUARTERLY
-  data?: null
+  type: typeof actionTypes.GET_DATA
+  data: String
 }
 
 // saving data interfaces
 export type saveRequestData = {
-  data: Array<Object>
+  quarterly?: Array<Object>
+  monthly?: Array<Object>
 }
 export interface SaveDataInterface {
-  type: typeof actionTypes.SAVE_DATA_QUARTERLY
+  type: typeof actionTypes.SAVE_DATA
   data: saveRequestData
 }
 

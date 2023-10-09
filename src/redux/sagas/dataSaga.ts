@@ -8,9 +8,14 @@ import { toast } from "react-toastify"
 export function* getDataSagaCall(action: ReduxAction): any {
   try {
     yield put(actionCreators.isLoading({ loading: true }))
-    const res = yield serviceCreators.getDataService()
+    const res = yield serviceCreators.getDataService(action?.data)
+    console.log(res, "YOOO RES")
     if (res && res?.status === 201) {
-      yield put(actionCreators.saveDataQuarterly(res?.data))
+      if (action?.data == "quarterly") {
+        yield put(actionCreators.saveData({ quarterly: res?.data }))
+      } else if (action?.data == "monthly") {
+        yield put(actionCreators.saveData({ monthly: res?.data }))
+      }
     }
     yield put(actionCreators.isLoading({ loading: false }))
   } catch (error) {

@@ -8,13 +8,16 @@ import {
 import * as actionTypes from "./actionTypes"
 
 // get Data
-export const getDataQuarterly = (): GetDataInterface => ({
-  type: actionTypes.GET_DATA_QUARTERLY,
+export const getData = ({ typeOf }: { typeOf: String }): GetDataInterface => ({
+  type: actionTypes.GET_DATA,
+  data: typeOf,
 })
 
 // get Data
-export const saveDataQuarterly = (data: saveRequestData): SaveDataInterface => ({
-  type: actionTypes.SAVE_DATA_QUARTERLY,
+export const saveData = (
+  data: saveRequestData
+): SaveDataInterface => ({
+  type: actionTypes.SAVE_DATA,
   data,
 })
 

@@ -8,9 +8,9 @@ const PROD_ROUTE = process.env.NEXT_PUBLIC_PROD_ROUTE
 const ACTIVE_ROUTE = !true ? DEV_ROUTE : PROD_ROUTE
 
 // handle getting data from database
-export const getDataService = async () => {
+export const getDataService = async (type: String) => {
   try {
-    return await axios.get(`${ACTIVE_ROUTE}`)
+    return await axios.get(`${ACTIVE_ROUTE}?type=${type}`)
   } catch (error: any) {
     toast.error(
       `${
@@ -31,13 +31,7 @@ export const postDataService = async (formData: FormData) => {
       },
     })
   } catch (error: any) {
-    toast.error(
-      `${
-        error?.message === "Network Error"
-          ? "Connection to Database Refused"
-          : error
-      }`
-    )
+    toast.error(`${error?.message}`)
   }
 }
 

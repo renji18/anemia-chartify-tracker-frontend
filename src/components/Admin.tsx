@@ -54,7 +54,6 @@ const AdminSide = ({ type }: { type: String }) => {
           <div className="text-center text-xl pt-10 text-white font-bold w-1/2 lg:w-1/3 h-1/3 bg-black/40 rounded">
             <div>
               <p>Confirm Submission??</p>
-              <p>This is an irreversible action</p>
             </div>
             <div className="text-base mt-5">{file?.name}</div>
             <div className="flex justify-between px-16 pt-20">
@@ -87,17 +86,28 @@ const AdminSide = ({ type }: { type: String }) => {
             <div>
               <p>
                 Select{" "}
-                <span className="font-semibold">Quarter-wise dropdown</span>{" "}
+                <span className="font-semibold">
+                  {type === "quarterly" ? "Quarter" : "Month"}-wise dropdown
+                </span>{" "}
                 from the <span className="font-semibold">AMB Ranking</span> in
                 the navigation header
               </p>
             </div>
             <div>
               <p>
-                Check the <span className="font-semibold">Select Quarter</span>{" "}
-                checkbox, select the required{" "}
+                {type === "quarterly" ? (
+                  <span>
+                    Check the{" "}
+                    <span className="font-semibold">Select Quarter</span>{" "}
+                    checkbox, select
+                  </span>
+                ) : (
+                  "Select"
+                )}{" "}
+                the required{" "}
                 <span className="font-semibold">
-                  Year, Quarter and Location
+                  Year, {type === "quarterly" ? "Quarter" : "Month"} and
+                  Location
                 </span>{" "}
                 from the dropdowns available and then press{" "}
                 <span className="font-semibold">View Details</span>
