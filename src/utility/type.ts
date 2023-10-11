@@ -102,6 +102,37 @@ export interface DataItem {
   state: String
 }
 
+// data item for redux interface monthly
+export interface DataItemMonthly {
+  monthly: {
+    "Children (6 - 59 months)": String[]
+    "Children (6 - 9 years)": String[]
+    "Adolescents (10 - 19 years)": String[]
+    "Pregnant Women": String[]
+    Mothers: String[]
+    "Index Value": String[]
+    Rank: String[]
+    District: String
+  }[]
+  months: String
+  state: String
+}
+
+// single instance of items
+export interface DataItemObject {
+  monthly: {
+    "Children (6 - 59 months)": String[]
+    "Children (6 - 9 years)": String[]
+    "Adolescents (10 - 19 years)": String[]
+    "Pregnant Women": String[]
+    Mothers: String[]
+    "Index Value": String[]
+    Rank: String[]
+    District: String
+  }
+}
+
+
 export interface CityData {
   "Children (6 - 59 months)": String[]
   "Children (6 - 9 years)": String[]

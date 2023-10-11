@@ -16,7 +16,7 @@ type CityDataKey = keyof CityData | ""
 
 export default function Quarterly() {
   const dispatch = useAppDispatch()
-  // const [loading, setLoading] = useState<boolean>(true)
+  const [loading, setLoading] = useState<boolean>(true)
 
   // state data array for showing
   const [availableStates, setAvailableStates] = useState<String[]>([])
@@ -48,7 +48,7 @@ export default function Quarterly() {
   const [selectAllCities, setSelectAllCities] = useState<Boolean>(false)
 
   const { quarterly }: DataItem = useAppSelector((state: any) => state?.data)
-  const { loading } = useAppSelector((state) => state?.loader)
+  // const { loading } = useAppSelector((state) => state?.loader)
 
   // useEffect to set all avaialbe states to show in the drop down
   useEffect(() => {
@@ -254,6 +254,10 @@ export default function Quarterly() {
     dispatch(getData({ typeOf: "quarterly" }))
   }, [])
 
+  useEffect(() => {
+    availableStates?.length !== 0 && setLoading(false);
+   },[availableStates])
+
   if (loading) return <Loader />
 
   return (
@@ -345,7 +349,8 @@ export default function Quarterly() {
                 yAxisData={selectedCategoryData}
                 category={selectedCategory}
                 selectedState={selectedState}
-                quarterly={quarterly}
+                dataSet={quarterly}
+                type={"quarterly"}
               />
             )}
           </div>
