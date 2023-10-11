@@ -28,17 +28,23 @@ export default function FilledLinedCharts({
   yAxisData,
   category,
   selectedState,
-  quarterly,
+  dataSet,
+  type,
 }) {
   const [xAxis, setXAxis] = useState([])
   const [yAxis, setYAxis] = useState([])
 
   // useEffect to properly select quarters for specific states
   useEffect(() => {
+    const selectedStateData = dataSet?.filter(
+      (data) => data?.state === selectedState
+    )[0]
     setXAxis(
-      quarterly?.filter((data) => data?.state === selectedState)[0]?.quarters
+      type === "quarterly"
+        ? selectedStateData?.quarters
+        : selectedStateData?.months
     )
-  }, [quarterly, selectedState])
+  }, [dataSet, selectedState, type])
 
   useEffect(() => {
     setYAxis(yAxisData)
@@ -57,7 +63,7 @@ export default function FilledLinedCharts({
           >
             {category} &rarr;
           </p>
-          {/* <div className="border border-gray-400 pt-0 rounded-xl w-full h-full my-auto  shadow-xl">
+          <div className="border border-gray-400 pt-0 rounded-xl w-full h-full my-auto  shadow-xl">
             <Bar
               data={{
                 labels: xAxis,
@@ -75,20 +81,20 @@ export default function FilledLinedCharts({
                 },
               }}
             />
-          </div> */}
-          <div className="border border-gray-400 pt-0 rounded-xl w-full h-full my-auto  shadow-xl">
+          </div>
+          {/* <div className="border border-gray-400 pt-0 rounded-xl w-full h-full my-auto  shadow-xl">
             <Line
               data={{
                 labels: xAxis,
                 datasets: yAxis,
               }}
             />
-          </div>
+          </div> */}
         </div>
       )}
       <div>
         <p className="text-center pt-5 text-3xl">
-          {quarterly
+          {type === "quarterly"
             ? `Quarterly Data Starting From 2021 `
             : "Monthly Data Starting From 2023"}{" "}
           &rarr;

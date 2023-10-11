@@ -5,7 +5,7 @@ import { toast } from "react-toastify"
 const DEV_ROUTE = process.env.NEXT_PUBLIC_DEV_ROUTE
 const PROD_ROUTE = process.env.NEXT_PUBLIC_PROD_ROUTE
 
-const ACTIVE_ROUTE = !true ? DEV_ROUTE : PROD_ROUTE
+const ACTIVE_ROUTE = true ? DEV_ROUTE : PROD_ROUTE
 
 // handle getting data from database
 export const getDataService = async (type: String) => {
