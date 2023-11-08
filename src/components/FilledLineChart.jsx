@@ -63,7 +63,7 @@ export default function FilledLinedCharts({
           >
             {category} &rarr;
           </p>
-          <div className="border border-gray-400 pt-0 rounded-xl w-full h-full my-auto  shadow-xl">
+          {/* <div className="border border-gray-400 pt-0 rounded-xl w-full h-full my-auto  shadow-xl">
             <Bar
               data={{
                 labels: xAxis,
@@ -81,15 +81,15 @@ export default function FilledLinedCharts({
                 },
               }}
             />
-          </div>
-          {/* <div className="border border-gray-400 pt-0 rounded-xl w-full h-full my-auto  shadow-xl">
+          </div> */}
+          <div className="border border-gray-400 pt-0 rounded-xl w-full h-full my-auto  shadow-xl">
             <Line
               data={{
                 labels: xAxis,
                 datasets: yAxis,
               }}
             />
-          </div> */}
+          </div>
         </div>
       )}
       <div>
