@@ -15,7 +15,7 @@ import { getData } from "@/redux/actions"
 
 type CityDataKey = keyof CityData | ""
 
-export default function Quarterly() {
+export default function Monthly() {
   const dispatch = useAppDispatch()
   const [loading, setLoading] = useState<boolean>(true)
 
@@ -37,9 +37,9 @@ export default function Quarterly() {
     useState<DataItemObject["monthly"]>()
 
   // year data
-  const [selectedCategoryYearData, setSelectedCategoryYearData] = useState<
-    String | String[]
-  >([])
+  // const [selectedCategoryYearData, setSelectedCategoryYearData] = useState<
+  //   String | String[]
+  // >([])
 
   // selected State string
   const [selectedState, setSelectedState] = useState<String | null>(null)
@@ -71,7 +71,6 @@ export default function Quarterly() {
     )
   }, [monthly])
 
-
   // function to create the dropdown options for cities of the selected state in availableCities
   // also stores all the data of the selected state in selectedStatesCityData
   const handleStateChange = (selectedState: String) => {
@@ -82,7 +81,7 @@ export default function Quarterly() {
     setSelectedCategory("")
     setYears([])
     setSelectedYear("")
-    setSelectedCategoryYearData([])
+    // setSelectedCategoryYearData([])
     setSelectedState(selectedState)
     const filteredStateData: any = monthly?.find(
       (item: any) => item?.state === selectedState
@@ -106,7 +105,7 @@ export default function Quarterly() {
     setSelectedCategory("")
     setYears([])
     setSelectedYear("")
-    setSelectedCategoryYearData([])
+    // setSelectedCategoryYearData([])
   }
 
   // selecting all states data
@@ -147,7 +146,7 @@ export default function Quarterly() {
     setSelectedCategory(categorySelected)
     if (selectedCityCategoryData && categorySelected) {
       const filteredCategoryData = selectedCityCategoryData[categorySelected]
-      setSelectedCategoryYearData(filteredCategoryData)
+      // setSelectedCategoryYearData(filteredCategoryData)
       const filteredYearData = Array.isArray(filteredCategoryData)
         ? filteredCategoryData?.map((item: any) => item.year)
         : []
@@ -155,7 +154,7 @@ export default function Quarterly() {
     } else {
       const randomCityData = selectedStatesCityData[0]
       const filteredCategoryData = randomCityData[categorySelected]
-      setSelectedCategoryYearData(filteredCategoryData)
+      // setSelectedCategoryYearData(filteredCategoryData)
       const filteredYearData = Array.isArray(filteredCategoryData)
         ? filteredCategoryData?.map((item: any) => item.year)
         : []
@@ -290,7 +289,7 @@ export default function Quarterly() {
               data: categoryForSelectedYear?.data,
               label: data?.District?.toString() || "",
               borderColor: getUniqueRandomColor(),
-              backgroundColor: getUniqueRandomColor(),
+              // backgroundColor: getUniqueRandomColor(),
             }
           }
         )
@@ -307,8 +306,8 @@ export default function Quarterly() {
   }, [])
 
   useEffect(() => {
-    availableStates?.length !== 0 && setLoading(false);
-   },[availableStates])
+    availableStates?.length !== 0 && setLoading(false)
+  }, [availableStates])
 
   if (loading) return <Loader />
 

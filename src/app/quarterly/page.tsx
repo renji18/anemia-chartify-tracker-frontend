@@ -240,7 +240,7 @@ export default function Quarterly() {
             data: dataArray,
             label: data?.District?.toString() || "",
             borderColor: getUniqueRandomColor(),
-            backgroundColor: getUniqueRandomColor(),
+            // backgroundColor: getUniqueRandomColor(),
           }
         })
         setSelectedCategoryData(modifyAllData)
