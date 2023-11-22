@@ -90,7 +90,7 @@ const AdminSide = ({ type }: { type: String }) => {
                   {type === "quarterly" ? "Quarter" : "Month"}-wise dropdown
                 </span>{" "}
                 from the <span className="font-semibold">AMB Ranking</span> in
-                the navigation header
+                the navigation header.
               </p>
             </div>
             <div>
@@ -113,19 +113,13 @@ const AdminSide = ({ type }: { type: String }) => {
                 <span className="font-semibold">View Details</span>
               </p>
             </div>
-            <div>
-              <p>
-                <span className="font-semibold">Download</span> the pdf
-              </p>
-            </div>
           </div>
 
           <div className="flex flex-col gap-2 items-center">
             <p>
-              Now that you have the required pdf, the next step is to convert it
-              to csv
+              Now that you have the required data, the next step is to download the csv
             </p>
-            <p>
+            {/* <p>
               You can do so from{" "}
               <Link
                 target="_blank"
@@ -135,10 +129,9 @@ const AdminSide = ({ type }: { type: String }) => {
                   PDF to CSV Website
                 </i>
               </Link>
-            </p>
+            </p> */}
             <p>
-              <span className="font-semibold">Download</span> the converted CSV
-              file.
+              <span>You can do so by clicking on</span>  <span className="font-semibold">EXPORT CSV</span> button just above the data table.
             </p>
           </div>
 
