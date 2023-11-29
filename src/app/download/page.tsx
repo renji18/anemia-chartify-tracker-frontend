@@ -8,6 +8,7 @@ import React, { useEffect, useState } from "react"
 const Download = () => {
   const dispatch = useAppDispatch()
   const linkData = useAppSelector((state: any) => state?.data)
+  const { loading } = useAppSelector((state: any) => state?.loader)
 
   const [link, setLink] = useState<null | string>(null)
 
@@ -34,7 +35,7 @@ const Download = () => {
     dispatch(getLinkToExportData())
   }, [])
 
-  if (link === null) return <Loader />
+  if (loading || !link) return <Loader />
 
   return (
     <div className="flex flex-col h-screen justify-center items-center gap-40 px-20">
