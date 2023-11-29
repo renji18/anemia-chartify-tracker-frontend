@@ -39,7 +39,7 @@ const Download = () => {
 
   return (
     <div className="flex flex-col h-screen justify-center items-center gap-40 px-20">
-      <p className="text-2xl leading-relaxed">
+      <p className="text-3xl text-center leading-relaxed">
         Click below to download an excel sheet containing data about the{" "}
         <b>
           <i>Index Value</i>
