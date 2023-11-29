@@ -13,18 +13,26 @@ export default function Home() {
       <p className="text-center text-lg font-bold text-cyan-400 md:text-2xl lg:text-4xl">
         AMB Ranking
       </p>
-      <div className="justify-evenly flex gap-5 flex-col sm:flex-row ">
+      <div>
+        <div className="justify-evenly flex gap-5 flex-col sm:flex-row ">
+          <button
+            className="text-lg md:text-3xl p-3 md:p-5 bg-black text-white rounded"
+            onClick={() => router.push("/monthly")}
+          >
+            Monthly
+          </button>
+          <button
+            className="text-lg md:text-3xl p-3 md:p-5 bg-black text-white rounded"
+            onClick={() => router.push("/quarterly")}
+          >
+            Quarterly
+          </button>
+        </div>
         <button
-          className="text-lg md:text-3xl p-3 md:p-5 bg-black text-white rounded"
-          onClick={() => router.push("/monthly")}
+          className="text-lg mt-10 md:text-3xl px-3 md:p-5 bg-black text-white rounded"
+          onClick={() => router.push("/download")}
         >
-          Monthly
-        </button>
-        <button
-          className="text-lg md:text-3xl p-3 md:p-5 bg-black text-white rounded"
-          onClick={() => router.push("/quarterly")}
-        >
-          Quarterly
+          Download Monthly Report
         </button>
       </div>
     </div>
