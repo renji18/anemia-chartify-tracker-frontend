@@ -16,6 +16,7 @@ export type UserActions =
   | IsLoginDataInterface
   | RegisterUserInterface
   | LoaingUserInterface
+  | ExportDataInterface
 
 // recieving data interfaces
 
@@ -41,6 +42,13 @@ export type sendRequestData = {
 export interface SendDataInterface {
   type: typeof actionTypes.POST_DATA
   data: sendRequestData
+}
+
+export interface ExportDataInterface {
+  type:
+    | typeof actionTypes.GET_LINK_TO_DOWNLOAD_DATA
+    | typeof actionTypes.SAVE_LINK_TO_DOWNLOAD_DATA
+  data?: any
 }
 
 // logging user interfaces
@@ -131,7 +139,6 @@ export interface DataItemObject {
     District: String
   }
 }
-
 
 export interface CityData {
   "Children (6 - 59 months)": String[]

@@ -37,3 +37,19 @@ export function* postDataSagaCall(action: ReduxAction): any {
     toast.error(`${error}`)
   }
 }
+
+// export data
+export function* downloadDataSagaCall(action: ReduxAction): any {
+  try {
+    yield put(actionCreators.isLoading({ loading: true }))
+    const res = yield serviceCreators.downloadDataService()
+    if (res && res?.status === 201) {
+      const blob = new Blob([res?.data], { type: res?.headers["content-type"] })
+      const link = window.URL.createObjectURL(blob)
+      yield put(actionCreators.saveLinkToExportData({ link }))
+    }
+    yield put(actionCreators.isLoading({ loading: false }))
+  } catch (error) {
+    toast.error(`${error}`)
+  }
+}

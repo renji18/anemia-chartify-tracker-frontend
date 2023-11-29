@@ -1,4 +1,5 @@
 import {
+  ExportDataInterface,
   GetDataInterface,
   SaveDataInterface,
   SendDataInterface,
@@ -14,9 +15,7 @@ export const getData = ({ typeOf }: { typeOf: String }): GetDataInterface => ({
 })
 
 // get Data
-export const saveData = (
-  data: saveRequestData
-): SaveDataInterface => ({
+export const saveData = (data: saveRequestData): SaveDataInterface => ({
   type: actionTypes.SAVE_DATA,
   data,
 })
@@ -24,5 +23,16 @@ export const saveData = (
 // send Data
 export const sendData = (data: sendRequestData): SendDataInterface => ({
   type: actionTypes.POST_DATA,
+  data,
+})
+
+// generate export link
+export const getLinkToExportData = (): ExportDataInterface => ({
+  type: actionTypes.GET_LINK_TO_DOWNLOAD_DATA,
+})
+
+// save export link
+export const saveLinkToExportData = (data: any): ExportDataInterface => ({
+  type: actionTypes.SAVE_LINK_TO_DOWNLOAD_DATA,
   data,
 })

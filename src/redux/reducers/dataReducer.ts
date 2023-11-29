@@ -9,6 +9,11 @@ export const dataReducer = (state = [], { type, data }: UserActions) => {
         ...state,
         ...data,
       }
+    case actionTypes.SAVE_LINK_TO_DOWNLOAD_DATA:
+      return {
+        ...state,
+        ...data,
+      }
     default:
       return state
   }

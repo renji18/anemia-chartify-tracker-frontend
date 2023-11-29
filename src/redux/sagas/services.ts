@@ -22,6 +22,21 @@ export const getDataService = async (type: String) => {
   }
 }
 
+// handle export data from database
+export const downloadDataService = async () => {
+  try {
+    return await axios.get(`${ACTIVE_ROUTE}download`, { responseType: "blob" })
+  } catch (error: any) {
+    toast.error(
+      `${
+        error?.message === "Network Error"
+          ? "Connection to Database Refused"
+          : error
+      }`
+    )
+  }
+}
+
 // handle sending data to database
 export const postDataService = async (formData: FormData) => {
   try {
