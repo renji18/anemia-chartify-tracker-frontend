@@ -3,20 +3,17 @@ import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
-  BarElement,
   PointElement, // for line
   LineElement, // for line
   Title,
   Tooltip,
   Legend,
 } from "chart.js"
-import { Bar } from "react-chartjs-2"
 import { Line } from "react-chartjs-2"
 
 ChartJS.register(
   CategoryScale,
   LinearScale,
-  BarElement,
   PointElement, // for line
   LineElement, // for line
   Title,
@@ -63,30 +60,18 @@ export default function FilledLinedCharts({
           >
             {category} &rarr;
           </p>
-          {/* <div className="border border-gray-400 pt-0 rounded-xl w-full h-full my-auto  shadow-xl">
-            <Bar
-              data={{
-                labels: xAxis,
-                datasets: yAxis,
-              }}
-              options={{
-                responsive: true,
-                scales: {
-                  xAxis: {
-                    stacked: true,
-                  },
-                  yAxis: {
-                    stacked: true,
-                  },
-                },
-              }}
-            />
-          </div> */}
           <div className="border border-gray-400 pt-0 rounded-xl w-full h-full my-auto  shadow-xl">
             <Line
               data={{
                 labels: xAxis,
                 datasets: yAxis,
+              }}
+              options={{
+                scales: {
+                  yAxis: {
+                    reverse: category === "Rank" ? true : false,
+                  },
+                },
               }}
             />
           </div>
