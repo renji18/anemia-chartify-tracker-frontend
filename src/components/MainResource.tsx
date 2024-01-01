@@ -414,9 +414,7 @@ const MainResource = ({ resourceType }: { resourceType: String }) => {
             <p className="text-2xl">Select the fields to view the data</p>
           </div>
         )}
-        <div
-          className={`flex gap-10 justify-evenly`}
-        >
+        <div className={`flex gap-10 justify-evenly`}>
           <div className="flex-1">
             <select
               name="state"
@@ -482,11 +480,14 @@ const MainResource = ({ resourceType }: { resourceType: String }) => {
             >
               <option value="">Select the category</option>
               {categories &&
-                categories.map((item: String, key: number) => (
-                  <option key={key} value={item.toString()}>
-                    {item}
-                  </option>
-                ))}
+                categories.map(
+                  (item: String, key: number) =>
+                    item !== "State Rank" && (
+                      <option key={key} value={item.toString()}>
+                        {item}
+                      </option>
+                    )
+                )}
             </select>
           </div>
           {resourceType === "monthly" && (
