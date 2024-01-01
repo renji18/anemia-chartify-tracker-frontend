@@ -1,67 +1,50 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import {
-  CityData,
-  DataItem,
-  DataItemMonthly,
-  DataItemObject,
-  DataSetInterface,
-  useAppDispatch,
-  useAppSelector,
-} from "@/utility/type"
+import { useAppDispatch, useAppSelector } from "@/utility/type"
 import FilledLinedCharts from "@/components/FilledLineChart"
 import Loader from "@/components/Loader"
 import { getData } from "@/redux/actions"
 
-type CityDataKey = keyof CityData | ""
-type SelectedStatesCityDataItem =
-  | DataItem["quarterly"]
-  | DataItemMonthly["monthly"]
-
-const MainResource = ({ resourceType }: { resourceType: String }) => {
+const MainResource = ({ resourceType }) => {
   const dispatch = useAppDispatch()
-  const [loading, setLoading] = useState<boolean>(true)
+  const [loading, setLoading] = useState(true)
 
   // state data array for showing
-  const [availableStates, setAvailableStates] = useState<String[]>([])
+  const [availableStates, setAvailableStates] = useState([])
   // city data array for showing
-  const [availableCities, setAvailableCities] = useState<String[]>([])
+  const [availableCities, setAvailableCities] = useState([])
   // category data array for showing
-  const [categories, setCategories] = useState<String[]>([])
+  const [categories, setCategories] = useState([])
   // year data array for showing
-  const [years, setYears] = useState<String[]>([])
+  const [years, setYears] = useState([])
 
   // city data (quarterly/monthly)
-  const [selectedStatesCityData, setSelectedStatesCityData] =
-    useState<SelectedStatesCityDataItem>([])
+  const [selectedStatesCityData, setSelectedStatesCityData] = useState([])
   // category data
-  const [selectedCityCategoryData, setSelectedCityCategoryData] =
-    useState<DataItemObject["monthly"]>()
+  const [selectedCityCategoryData, setSelectedCityCategoryData] = useState()
 
   // selected State string
-  const [selectedState, setSelectedState] = useState<String | null>(null)
+  const [selectedState, setSelectedState] = useState(null)
 
   // selected city string
-  const [selectedCity, setSelectedCity] = useState<String | null>(null)
+  const [selectedCity, setSelectedCity] = useState(null)
 
   // selected category
-  const [selectedCategory, setSelectedCategory] = useState<CityDataKey>("")
+  const [selectedCategory, setSelectedCategory] = useState("")
 
   // selected year
-  const [selectedYear, setSelectedYear] = useState<String>("")
+  const [selectedYear, setSelectedYear] = useState("")
 
   // y-axis data
-  const [selectedCategoryData, setSelectedCategoryData] = useState<
-    DataSetInterface[]
-  >([])
+  const [selectedCategoryData, setSelectedCategoryData] = useState([])
 
   // selecting all cities
-  const [selectAllCities, setSelectAllCities] = useState<Boolean>(false)
+  const [selectAllCities, setSelectAllCities] = useState(false)
 
   // resource type
   const [resourceTypeState, setResourceTypeState] = useState([])
-  const resource = useAppSelector((state: any) => state?.data)
+  const resource = useAppSelector((state) => state?.data)
 
   // useEffect to set resource type
   useEffect(() => {
@@ -76,14 +59,13 @@ const MainResource = ({ resourceType }: { resourceType: String }) => {
   // useEffect to set all avaialbe states to show in the drop down
   useEffect(() => {
     setAvailableStates(
-      resourceTypeState?.map((value: any) => value?.state?.toString()).sort() ||
-        []
+      resourceTypeState?.map((value) => value?.state?.toString()).sort() || []
     )
   }, [resourceTypeState])
 
   // function to create the dropdown options for cities of the selected state in availableCities
   // also stores all the data of the selected state in selectedStatesCityData
-  const handleStateChange = (selectedState: String) => {
+  const handleStateChange = (selectedState) => {
     setSelectedCity(null)
     setCategories([])
     setSelectAllCities(false)
@@ -92,13 +74,13 @@ const MainResource = ({ resourceType }: { resourceType: String }) => {
     setYears([])
     setSelectedYear("")
     setSelectedState(selectedState)
-    const filteredStateData: any = resourceTypeState?.find(
-      (item: any) => item?.state === selectedState
+    const filteredStateData = resourceTypeState?.find(
+      (item) => item?.state === selectedState
     )
     if (filteredStateData) {
       setSelectedStatesCityData(filteredStateData?.data)
       setAvailableCities(
-        filteredStateData?.data?.map((item: CityData) => item?.District)?.sort()
+        filteredStateData?.data?.map((item) => item?.District)?.sort()
       )
     } else {
       setAvailableCities([])
@@ -127,7 +109,7 @@ const MainResource = ({ resourceType }: { resourceType: String }) => {
 
   // function to store the selected city in selectedCity
   // also creates dropdown options for categories
-  const handleCityChange = (selectedCity: String) => {
+  const handleCityChange = (selectedCity) => {
     if (selectedCity === "ALL CITY") {
       return handleSelectAllCities()
     } else if (selectedCity === "CLEAR ALL SELECTION") {
@@ -149,14 +131,14 @@ const MainResource = ({ resourceType }: { resourceType: String }) => {
   }
 
   // function to store the selected category in selectedCatogory
-  const handleCategoryChange = (categorySelected: keyof CityData) => {
+  const handleCategoryChange = (categorySelected) => {
     setSelectedCategory(categorySelected)
     if (resourceType === "quarterly") return
     if (selectedCityCategoryData && categorySelected) {
       const filteredCategoryData = selectedCityCategoryData[categorySelected]
       // setSelectedCategoryYearData(filteredCategoryData)
       const filteredYearData = Array.isArray(filteredCategoryData)
-        ? filteredCategoryData?.map((item: any) => item.year)
+        ? filteredCategoryData?.map((item) => item.year)
         : []
       setYears(filteredYearData)
     } else {
@@ -164,13 +146,13 @@ const MainResource = ({ resourceType }: { resourceType: String }) => {
       const filteredCategoryData = randomCityData[categorySelected]
       // setSelectedCategoryYearData(filteredCategoryData)
       const filteredYearData = Array.isArray(filteredCategoryData)
-        ? filteredCategoryData?.map((item: any) => item.year)
+        ? filteredCategoryData?.map((item) => item.year)
         : []
       setYears(filteredYearData)
     }
   }
 
-  const handleYearChange = (yearSelected: String) => {
+  const handleYearChange = (yearSelected) => {
     if (resourceType === "quarterly") return
     setSelectedYear(yearSelected)
   }
@@ -188,7 +170,7 @@ const MainResource = ({ resourceType }: { resourceType: String }) => {
 
   // Function to generate a unique random color that doesn't exist in selectedCategoryData
   function getUniqueRandomColor() {
-    let randomColor: String = ""
+    let randomColor = ""
     let isUnique = false
     while (!isUnique) {
       randomColor = getRandomColor()
@@ -201,9 +183,9 @@ const MainResource = ({ resourceType }: { resourceType: String }) => {
   }
 
   // setting style for selected option
-  const getOptionStyle = (item: String) => {
+  const getOptionStyle = (item) => {
     const labelExists = selectedCategoryData.some(
-      (category: DataSetInterface) => category.label === item?.toString()
+      (category) => category.label === item?.toString()
     )
     return {
       ...(labelExists ? { backgroundColor: "black", color: "white" } : {}),
@@ -217,22 +199,15 @@ const MainResource = ({ resourceType }: { resourceType: String }) => {
       //  selectedCity=the string && selectedCategory=the category
       if (selectedCity !== "" && selectedCategory !== "") {
         // selectedCityData = the data after finding the filtered city from seelcted city
-        const selectedCityData: CityData | undefined =
-          selectedStatesCityData?.find(
-            (item) => item?.District === selectedCity
-          )
+        const selectedCityData = selectedStatesCityData?.find(
+          (item) => item?.District === selectedCity
+        )
 
         if (selectedCityData) {
           // categoryData = The category data for the particular category of that particular city
-          const categoryData: String[] | String | undefined =
-            selectedCityData[selectedCategory]
+          const categoryData = selectedCityData[selectedCategory]
 
           if (categoryData !== undefined) {
-            // categoryDataArray= The array of data of values of the selected category to be passed to the chart
-            const categoryDataArray: String[] = Array?.isArray(categoryData)
-              ? categoryData
-              : [categoryData as String]
-
             const updatedCategoryData = Array.from(selectedCategoryData)
 
             const existingCity = updatedCategoryData?.find(
@@ -248,13 +223,14 @@ const MainResource = ({ resourceType }: { resourceType: String }) => {
               setSelectedCategoryData((prev) => [
                 ...prev,
                 {
-                  data: categoryDataArray,
+                  data: categoryData,
                   label: selectedCity,
                   borderColor: getUniqueRandomColor(),
                   backgroundColor: getUniqueRandomColor(),
                 },
               ])
             }
+            setSelectedCity(null)
           } else {
             setSelectedCategoryData([])
           }
@@ -277,15 +253,13 @@ const MainResource = ({ resourceType }: { resourceType: String }) => {
         selectedYear !== ""
       ) {
         // selectedCityData = the data after finding the filtered city from seelcted city
-        const selectedCityData: CityData | undefined =
-          selectedStatesCityData?.find(
-            (item) => item["District"] === selectedCity
-          )
+        const selectedCityData = selectedStatesCityData?.find(
+          (item) => item["District"] === selectedCity
+        )
 
         if (selectedCityData) {
           // categoryData = The category data for the particular category of that particular city
-          const categoryData: String[] | String | undefined =
-            selectedCityData[selectedCategory]
+          const categoryData = selectedCityData[selectedCategory]
 
           if (categoryData !== undefined) {
             const updatedCategoryData = Array.from(selectedCategoryData)
@@ -300,9 +274,9 @@ const MainResource = ({ resourceType }: { resourceType: String }) => {
               )
               setSelectedCategoryData(filteredData)
             } else {
-              const yearDataArray: any = Array.isArray(categoryData)
+              const yearDataArray = Array.isArray(categoryData)
                 ? categoryData?.find(
-                    (item: any) => item.year === Number(selectedYear)
+                    (item) => item.year === Number(selectedYear)
                   )
                 : []
 
@@ -316,6 +290,8 @@ const MainResource = ({ resourceType }: { resourceType: String }) => {
                 },
               ])
             }
+
+            setSelectedCity(null)
           } else {
             setSelectedCategoryData([])
           }
@@ -342,7 +318,7 @@ const MainResource = ({ resourceType }: { resourceType: String }) => {
             }
           }
         )
-        const modifyAllData: any = filteredCategoryWiseCityData?.map((data) => {
+        const modifyAllData = filteredCategoryWiseCityData?.map((data) => {
           const dataArray = Array.isArray(data[selectedCategory])
             ? data[selectedCategory]
             : [data[selectedCategory]?.toString() || ""]
@@ -374,26 +350,50 @@ const MainResource = ({ resourceType }: { resourceType: String }) => {
           }
         )
 
-        const modifyAllData: any = filteredCategoryWiseCityData?.map(
-          (data: any) => {
-            const categoryForSelectedYear = data[selectedCategory]?.find(
-              (cat: any) => cat.year === Number(selectedYear)
-            )
+        const modifyAllData = filteredCategoryWiseCityData?.map((data) => {
+          const categoryForSelectedYear = data[selectedCategory]?.find(
+            (cat) => cat.year === Number(selectedYear)
+          )
 
-            return {
-              data: categoryForSelectedYear?.data,
-              label: data?.District?.toString() || "",
-              borderColor: getUniqueRandomColor(),
-              // backgroundColor: getUniqueRandomColor(),
-            }
+          return {
+            data: categoryForSelectedYear?.data,
+            label: data?.District?.toString() || "",
+            borderColor: getUniqueRandomColor(),
+            // backgroundColor: getUniqueRandomColor(),
           }
-        )
+        })
 
         setSelectedCategoryData(modifyAllData)
       }
     }
     updatedCategoryDataWhenAllCitiesSelected()
   }, [selectAllCities, selectedCategory, selectedStatesCityData, selectedYear])
+
+  // useEffect for changing category
+  useEffect(() => {
+    const handleUpdatingValueForCategoryChange = () => {
+      if (selectedCategoryData?.length === 0) return
+      const selectedCitiesData = Array.from(selectedCategoryData).map(
+        (catData) => {
+          const cityData = selectedStatesCityData?.find(
+            (item) => item?.District === catData?.label
+          )
+          console.log(cityData, "cit data")
+
+          return {
+            data: cityData[selectedCategory],
+            label: catData?.label,
+            borderColor: catData?.borderColor,
+            backgroundColor: catData?.backgroundColor,
+          }
+        }
+      )
+
+      setSelectedCategoryData(selectedCitiesData)
+      console.log(selectedCitiesData, "sele cit data")
+    }
+    handleUpdatingValueForCategoryChange()
+  }, [selectedCategory])
 
   // useEffect to get the quarterly data
   useEffect(() => {
@@ -424,7 +424,7 @@ const MainResource = ({ resourceType }: { resourceType: String }) => {
             >
               <option value="">Select the state</option>
               {availableStates &&
-                availableStates.map((item: String, key: number) => (
+                availableStates.map((item, key) => (
                   <option
                     style={{ padding: "10px" }}
                     key={key}
@@ -457,7 +457,7 @@ const MainResource = ({ resourceType }: { resourceType: String }) => {
                 CLEAR ALL SELECTION
               </option>
               {availableCities &&
-                availableCities.map((item: String, key: number) => (
+                availableCities.map((item, key) => (
                   <option
                     style={getOptionStyle(item)}
                     key={key}
@@ -473,15 +473,13 @@ const MainResource = ({ resourceType }: { resourceType: String }) => {
               name="cat"
               id="cat"
               disabled={!categories.length}
-              onChange={(e) =>
-                handleCategoryChange(e.target.value as keyof CityData)
-              }
+              onChange={(e) => handleCategoryChange(e.target.value)}
               className="p-2 w-full rounded-md outline-none disabled:cursor-not-allowed"
             >
               <option value="">Select the category</option>
               {categories &&
                 categories.map(
-                  (item: String, key: number) =>
+                  (item, key) =>
                     item !== "State Rank" && (
                       <option key={key} value={item.toString()}>
                         {item}
@@ -501,7 +499,7 @@ const MainResource = ({ resourceType }: { resourceType: String }) => {
               >
                 <option value="">Select the Year</option>
                 {years &&
-                  years.map((item: String, key: number) => (
+                  years.map((item, key) => (
                     <option key={key} value={item.toString()}>
                       {item}
                     </option>
