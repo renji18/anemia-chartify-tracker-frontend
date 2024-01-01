@@ -6,6 +6,7 @@ export default function Loader() {
       <div className="fixed inset-0 z-10 h-screen bg-my-light dark:bg-my-dark flex items-center justify-center flex-col">
         <Image
           src={LOADER}
+          priority
           alt="loader"
           className="w-[60px]  h-[60px] object-contain"
         />

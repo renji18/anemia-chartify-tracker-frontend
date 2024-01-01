@@ -31,6 +31,8 @@ export default function FilledLinedCharts({
   const [xAxis, setXAxis] = useState([])
   const [yAxis, setYAxis] = useState([])
 
+  // console.log(yAxisData, "yasixdata")
+
   // useEffect to properly select quarters for specific states
   useEffect(() => {
     const selectedStateData = dataSet?.filter(
