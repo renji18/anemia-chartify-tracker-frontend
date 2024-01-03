@@ -246,6 +246,7 @@ const MainResource = ({ resourceType }) => {
   useEffect(() => {
     const handleCategoryChange = () => {
       if (resourceType === "quarterly") return
+      if (!selectedCategory && selectedCategoryData?.length !== 0) return
       //  selectedCity=the string && selectedCategory=the category
       if (
         selectedCity !== "" &&
@@ -288,7 +289,6 @@ const MainResource = ({ resourceType }) => {
                 },
               ])
             }
-
             setSelectedCity(null)
           } else {
             setSelectedCategoryData([])
@@ -395,6 +395,7 @@ const MainResource = ({ resourceType }) => {
     const handleUpdatingValueForCategoryChange = () => {
       if (resourceType === "quarterly") return
       if (selectedCategoryData?.length === 0) return
+      if (!selectedCategory) return
       const selectedCitiesData = Array.from(selectedCategoryData).map(
         (catData) => {
           const cityData = selectedStatesCityData?.find(
@@ -403,9 +404,8 @@ const MainResource = ({ resourceType }) => {
           const categoryData = cityData[selectedCategory].filter(
             (catData) => catData?.year === Number(selectedYear)
           )[0]
-
           return {
-            data: categoryData["data"],
+            data: categoryData?.data,
             label: catData?.label,
             borderColor: catData?.borderColor,
             backgroundColor: catData?.backgroundColor,
@@ -530,23 +530,25 @@ const MainResource = ({ resourceType }) => {
             </div>
           )}
         </div>
-        <div className="flex justify-center items-center w-full flex-wrap">
-          <div className="w-4/5">
-            {selectedCategoryData.length !== 0 && (
-              <FilledLinedCharts
-                yAxisData={selectedCategoryData}
-                category={selectedCategory}
-                selectedState={selectedState}
-                dataSet={
-                  resourceType === "quarterly"
-                    ? resource?.quarterly
-                    : resource?.monthly
-                }
-                type={resourceType === "quarterly" ? "quarterly" : "monthly"}
-              />
-            )}
+        {selectedCategory !== "" && resourceType === "monthly" && (
+          <div className="flex justify-center items-center w-full flex-wrap">
+            <div className="w-4/5">
+              {selectedCategoryData.length !== 0 && (
+                <FilledLinedCharts
+                  yAxisData={selectedCategoryData}
+                  category={selectedCategory}
+                  selectedState={selectedState}
+                  dataSet={
+                    resourceType === "quarterly"
+                      ? resource?.quarterly
+                      : resource?.monthly
+                  }
+                  type={resourceType === "quarterly" ? "quarterly" : "monthly"}
+                />
+              )}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   )
