@@ -274,11 +274,9 @@ const MainResource = ({ resourceType }) => {
               )
               setSelectedCategoryData(filteredData)
             } else {
-              const yearDataArray = Array.isArray(categoryData)
-                ? categoryData?.find(
-                    (item) => item.year === Number(selectedYear)
-                  )
-                : []
+              const yearDataArray = categoryData?.find(
+                (item) => item.year === Number(selectedYear)
+              )
 
               setSelectedCategoryData((prev) => [
                 ...prev,
@@ -369,17 +367,16 @@ const MainResource = ({ resourceType }) => {
     updatedCategoryDataWhenAllCitiesSelected()
   }, [selectAllCities, selectedCategory, selectedStatesCityData, selectedYear])
 
-  // useEffect for changing category
+  // useEffect for changing category for QUARTERLY
   useEffect(() => {
     const handleUpdatingValueForCategoryChange = () => {
+      if (resourceType === "monthly") return
       if (selectedCategoryData?.length === 0) return
       const selectedCitiesData = Array.from(selectedCategoryData).map(
         (catData) => {
           const cityData = selectedStatesCityData?.find(
             (item) => item?.District === catData?.label
           )
-          console.log(cityData, "cit data")
-
           return {
             data: cityData[selectedCategory],
             label: catData?.label,
@@ -390,10 +387,35 @@ const MainResource = ({ resourceType }) => {
       )
 
       setSelectedCategoryData(selectedCitiesData)
-      console.log(selectedCitiesData, "sele cit data")
     }
     handleUpdatingValueForCategoryChange()
-  }, [selectedCategory])
+  }, [selectedCategory, resourceType])
+  // for MONTHLY
+  useEffect(() => {
+    const handleUpdatingValueForCategoryChange = () => {
+      if (resourceType === "quarterly") return
+      if (selectedCategoryData?.length === 0) return
+      const selectedCitiesData = Array.from(selectedCategoryData).map(
+        (catData) => {
+          const cityData = selectedStatesCityData?.find(
+            (item) => item?.District === catData?.label
+          )
+          const categoryData = cityData[selectedCategory].filter(
+            (catData) => catData?.year === Number(selectedYear)
+          )[0]
+
+          return {
+            data: categoryData["data"],
+            label: catData?.label,
+            borderColor: catData?.borderColor,
+            backgroundColor: catData?.backgroundColor,
+          }
+        }
+      )
+      setSelectedCategoryData(selectedCitiesData)
+    }
+    handleUpdatingValueForCategoryChange()
+  }, [selectedCategory, resourceType, selectedYear])
 
   // useEffect to get the quarterly data
   useEffect(() => {
