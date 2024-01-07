@@ -428,6 +428,16 @@ const MainResource = ({ resourceType }) => {
 
   if (loading) return <Loader />
 
+  const customCategories = [
+    "Children (6 - 59 months)",
+    "Children (6 - 9 years)",
+    "Adolescents (10 - 19 years)",
+    "Pregnant Women",
+    "Mothers",
+    "Index Value",
+    "Rank",
+  ]
+
   return (
     <div className="p-10 min-h-screen">
       <div>
@@ -467,6 +477,12 @@ const MainResource = ({ resourceType }) => {
             >
               <option value="">Select the city</option>
               <option
+                style={{ backgroundColor: "violet", color: "white" }}
+                value="GUJARAT"
+              >
+                GUJARAT
+              </option>
+              <option
                 style={{ backgroundColor: "green", color: "white" }}
                 value="ALL CITY"
               >
@@ -479,15 +495,18 @@ const MainResource = ({ resourceType }) => {
                 CLEAR ALL SELECTION
               </option>
               {availableCities &&
-                availableCities.map((item, key) => (
-                  <option
-                    style={getOptionStyle(item)}
-                    key={key}
-                    value={item?.toString()}
-                  >
-                    {item}
-                  </option>
-                ))}
+                availableCities.map(
+                  (item, key) =>
+                    item?.toString() !== "GUJARAT" && (
+                      <option
+                        style={getOptionStyle(item)}
+                        key={key}
+                        value={item?.toString()}
+                      >
+                        {item}
+                      </option>
+                    )
+                )}
             </select>
           </div>
           <div className="flex-1">
@@ -498,9 +517,9 @@ const MainResource = ({ resourceType }) => {
               onChange={(e) => handleCategoryChange(e.target.value)}
               className="p-2 w-full rounded-md outline-none disabled:cursor-not-allowed"
             >
-              <option value="">Select the category</option>
+              <option value="">IFA Coverage - Key Indicators</option>
               {categories &&
-                categories.map(
+                customCategories.map(
                   (item, key) =>
                     item !== "State Rank" && (
                       <option key={key} value={item.toString()}>
