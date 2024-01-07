@@ -530,7 +530,7 @@ const MainResource = ({ resourceType }) => {
             </div>
           )}
         </div>
-        {selectedCategory !== "" && resourceType === "monthly" && (
+        {selectedCategory !== "" && (
           <div className="flex justify-center items-center w-full flex-wrap">
             <div className="w-4/5">
               {selectedCategoryData.length !== 0 && (
@@ -538,6 +538,7 @@ const MainResource = ({ resourceType }) => {
                   yAxisData={selectedCategoryData}
                   category={selectedCategory}
                   selectedState={selectedState}
+                  selectedYear={selectedYear}
                   dataSet={
                     resourceType === "quarterly"
                       ? resource?.quarterly

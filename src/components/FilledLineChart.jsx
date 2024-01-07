@@ -25,6 +25,7 @@ export default function FilledLinedCharts({
   yAxisData,
   category,
   selectedState,
+  selectedYear,
   dataSet,
   type,
 }) {
@@ -80,8 +81,8 @@ export default function FilledLinedCharts({
       <div>
         <p className="text-center pt-5 text-3xl">
           {type === "quarterly"
-            ? `Quarterly Data Starting From 2021 `
-            : "Monthly Data Starting From 2023"}{" "}
+            ? `Quarterly Data Starting From 2021`
+            : `Monthly Data For ${selectedYear}`}{" "}
           &rarr;
         </p>
       </div>
